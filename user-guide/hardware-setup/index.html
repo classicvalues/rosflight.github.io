@@ -1,0 +1,1144 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="A lean, open-source autopilot system built by researchers, for researchers">
+      
+      
+        <link rel="canonical" href="http://rosflight.org/user-guide/hardware-setup/">
+      
+      
+        <meta name="author" content="James Jackson, Daniel Koch">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+    
+    
+      
+        <title>Hardware Setup - ROSflight</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#546e7a">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-96018590-2", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue-grey" data-md-color-accent="red">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#hardware-setup" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://rosflight.org" title="ROSflight" class="md-header-nav__button md-logo">
+          
+            <img src="../../assets/logo.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              ROSflight
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Hardware Setup
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../overview/" class="md-tabs__link md-tabs__link--active">
+          User Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../developer-guide/contribution-guidelines/" class="md-tabs__link">
+          Developer Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../algorithms/estimator/" class="md-tabs__link">
+          Algorithms
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://rosflight.org" title="ROSflight" class="md-nav__button md-logo">
+      
+        <img src="../../assets/logo.png" width="48" height="48">
+      
+    </a>
+    ROSflight
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      User Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        User Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Hardware Setup
+      </label>
+    
+    <a href="./" title="Hardware Setup" class="md-nav__link md-nav__link--active">
+      Hardware Setup
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parts-list" class="md-nav__link">
+    Parts List
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frame-motors-escs-battery-and-propeller" class="md-nav__link">
+    Frame, Motors, ESCs, Battery, and Propeller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flight-controller" class="md-nav__link">
+    Flight Controller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-sensors" class="md-nav__link">
+    External Sensors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vibration-isolation" class="md-nav__link">
+    Vibration Isolation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#companion-computer" class="md-nav__link">
+    Companion Computer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wi-fi" class="md-nav__link">
+    Wi-Fi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rc-transmitter-and-receiver" class="md-nav__link">
+    RC Transmitter and Receiver
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#laptop-or-base-station-computer" class="md-nav__link">
+    Laptop or Base Station Computer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#joystick" class="md-nav__link">
+    Joystick
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-diagram" class="md-nav__link">
+    Wiring Diagram
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#motor-layouts" class="md-nav__link">
+    Motor Layouts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connecting-to-the-flight-controller" class="md-nav__link">
+    Connecting to the Flight Controller
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-secondary-serial-links" class="md-nav__link">
+    Using Secondary Serial Links
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../flight-controller-setup/" title="Flight Controller Setup" class="md-nav__link">
+      Flight Controller Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../rc-configuration/" title="RC Configuration" class="md-nav__link">
+      RC Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ros-setup/" title="ROS Setup" class="md-nav__link">
+      ROS Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../parameter-configuration/" title="Parameter Configuration" class="md-nav__link">
+      Parameter Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../preflight-checks/" title="Pre-Flight Checks" class="md-nav__link">
+      Pre-Flight Checks
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../performance/" title="Improving Performance" class="md-nav__link">
+      Improving Performance
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../gazebo_simulation/" title="Running Gazebo Simulation" class="md-nav__link">
+      Running Gazebo Simulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../autonomous-flight/" title="Autonomous Flight" class="md-nav__link">
+      Autonomous Flight
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Developer Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Developer Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/contribution-guidelines/" title="Contribution Guidelines" class="md-nav__link">
+      Contribution Guidelines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/style-guide/" title="Style Guide" class="md-nav__link">
+      Style Guide
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/code-architecture/" title="Code Architecture" class="md-nav__link">
+      Code Architecture
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/building-flashing/" title="Building and Flashing" class="md-nav__link">
+      Building and Flashing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/unit-tests/" title="Unit Tests" class="md-nav__link">
+      Unit Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/debugging/" title="Using a Debugger" class="md-nav__link">
+      Using a Debugger
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/writing-documentation/" title="Writing Documentation" class="md-nav__link">
+      Writing Documentation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Algorithms
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Algorithms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../algorithms/estimator/" title="Estimator" class="md-nav__link">
+      Estimator
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parts-list" class="md-nav__link">
+    Parts List
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frame-motors-escs-battery-and-propeller" class="md-nav__link">
+    Frame, Motors, ESCs, Battery, and Propeller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flight-controller" class="md-nav__link">
+    Flight Controller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-sensors" class="md-nav__link">
+    External Sensors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vibration-isolation" class="md-nav__link">
+    Vibration Isolation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#companion-computer" class="md-nav__link">
+    Companion Computer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wi-fi" class="md-nav__link">
+    Wi-Fi
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rc-transmitter-and-receiver" class="md-nav__link">
+    RC Transmitter and Receiver
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#laptop-or-base-station-computer" class="md-nav__link">
+    Laptop or Base Station Computer
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#joystick" class="md-nav__link">
+    Joystick
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#wiring-diagram" class="md-nav__link">
+    Wiring Diagram
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#motor-layouts" class="md-nav__link">
+    Motor Layouts
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connecting-to-the-flight-controller" class="md-nav__link">
+    Connecting to the Flight Controller
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-secondary-serial-links" class="md-nav__link">
+    Using Secondary Serial Links
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/rosflight/firmware/blob/master/docs/user-guide/hardware-setup.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="hardware-setup">Hardware Setup<a class="headerlink" href="#hardware-setup" title="Permanent link">&para;</a></h1>
+<h2 id="parts-list">Parts List<a class="headerlink" href="#parts-list" title="Permanent link">&para;</a></h2>
+<p>To use ROSflight to its full potential, you will need the following system components. Some components are mounted on your MAV (Miniature Aerial Vehicle), while others are on the ground. ROSflight supports both multirotor and fixed-wing vehicles.</p>
+<p><em>Mounted on the MAV</em></p>
+<ol>
+<li>Aircraft Frame, Motor(s), ESC(s), Battery and Propeller(s)</li>
+<li>Flight Controller (FC)</li>
+<li>Vibration Isolation for FC</li>
+<li>Any external sensors</li>
+<li>R/C Receiver</li>
+<li>Companion Computer</li>
+<li>Wi-Fi Antenna, or access of some kind to ground-station, wireless network (e.g. Ubiquiti Bullet)</li>
+</ol>
+<p><em>Ground Station</em></p>
+<ol>
+<li>Ground-Station, Wireless Network (e.g. Wi-Fi Router, Ubiquiti Rocket)</li>
+<li>R/C transmitter</li>
+<li>Laptop or base station computer</li>
+<li>Joystick (Xbox controller)</li>
+</ol>
+<h3 id="frame-motors-escs-battery-and-propeller">Frame, Motors, ESCs, Battery, and Propeller<a class="headerlink" href="#frame-motors-escs-battery-and-propeller" title="Permanent link">&para;</a></h3>
+<p>We do not officially support any specific multirotor or airplane frame, motor, ESC, Battery or Propeller combination. There are a lot of great resources for building your own MAV, and there are a lot of great kits out there that have all of these parts.</p>
+<p>If you are designing your own multirotor or airplane, you may want to look at <a href="https://www.ecalc.ch/">ecalc</a>, an online tool which can help you design a proper ESC/Battery/Motor/Propeller system for your MAV.</p>
+<p>Some things to keep in mind as you design or build your MAV.</p>
+<ul>
+<li>Most kits do not include space for a companion computer, cameras, laser scanners or other sensors. Be sure to think about where these components are going to go, and how their placement will affect the CG of the MAV.</li>
+<li>You will likely also need to customize the power circuitry of your MAV to provide power to your companion computer at some specific voltage. Many people like to separate the power electronics (the ESCs and motors), from the computer and companion sensors. This can really come in handy if you are trying to develop code on the MAV, because you can have the computer on and sensors powered, and not worry at all about propellers turning on and causing injury as you move the aircraft about by hand. We will talk about this more when we talk about wiring up your MAV.</li>
+<li>Cheap propellers can cause a huge amount of vibration. Consider buying high-quality propellers, doing a propeller balance, or both. RCGroups, DIY Drones and Youtube have some awesome guides on how to do propeller balancing.</li>
+<li>ESCs will need to be calibrated from 2000 to 1000 us</li>
+</ul>
+<h3 id="flight-controller">Flight Controller<a class="headerlink" href="#flight-controller" title="Permanent link">&para;</a></h3>
+<p>ROSflight is best supported on the Openpilot Revolution from <a href="https://hobbyking.com/en_us/openpilot-cc3d-revolution-revo-32bit-flight-controller-w-integrated-433mhz-oplink.html?___store=en_us">hobbyking.com</a>. It works on most variants of the Revo and Naze32 flight controller. Configuring a new board is relatively straight-forward, assuming that the board uses an STM32F4xx or STM32F1xx processor.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Deprecation Notice: As of June 2019, plans are to deprecate support for the F1 in the near future. If you need to use an F1, you will need to retrieve an older version of the code that supports the F1. However, if there are issues, we will not be able to help you fix them.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>We have seen some problems using off-brand versions of flight controllers because the accelerometers are of very poor quality, which can mess with the firmware; try to avoid those if you can.</p>
+</div>
+<h3 id="external-sensors">External Sensors<a class="headerlink" href="#external-sensors" title="Permanent link">&para;</a></h3>
+<p>Additional Sensors you may want for your ROSflight setup include:</p>
+<ul>
+<li>Sonar - MB1242 I2CXL-MaxSonar - <a href="https://www.maxbotix.com/Ultrasonic_Sensors/MB1242.htm">$40 on MaxBotix</a></li>
+<li>GPS – u-blox NEO-M8N – <a href="https://drotek.com/shop/en/u-blox/883-ublox-neo-m8-gps-module.html">$35 from Drotek</a></li>
+<li>Digital Airspeed Sensor – <a href="http://store.jdrones.com/digital_airspeed_sensor_p/senair02kit.html">$65 on JDrones</a></li>
+</ul>
+<h3 id="vibration-isolation">Vibration Isolation<a class="headerlink" href="#vibration-isolation" title="Permanent link">&para;</a></h3>
+<p>It is really important to isolate your flight controller from vehicle vibrations, such as those caused by propellers and motors. We recommend using small amounts of <a href="https://www.amazon.com/Kyosho-Z8006-Vibration-Absorption-Sheet/dp/B002U2GS2K">Kyosho Zeal</a> to mount a fiberglass plate holding the FC to the MAV. You may also want to try adding mass to the flight control board. We have accomplished this by gluing steel washers to the fiberglass mounting plate.</p>
+<p><img alt="Vibration Isloation" src="../images/vibration_isolation.png" /></p>
+<p>You may need to experiment with the amount of gel you use, how far apart the gel is spaced, and the amount of mass added to the FC mounting plate. The interaction of these factors is difficult to predict, therefore it takes a little bit of experimentation to get it right.</p>
+<h3 id="companion-computer">Companion Computer<a class="headerlink" href="#companion-computer" title="Permanent link">&para;</a></h3>
+<p>The only requirement for the companion computer is that it runs Linux (Ubuntu LTS versions 16.04 or 18.04), ROS, has at least one USB port, and can be carried by the aircraft. We have had success with the following companion computers, but by no means is this a comprehensive list; it is more by way of suggestion.</p>
+<ul>
+<li>MSI CUBI – i7-5500U – <a href="https://www.amazon.com/MSI-Intel-Support-Barebones-Cubi-028BUS/dp/B011Q6BBMW/ref=sr_1_6?s=electronics&amp;ie=UTF8&amp;qid=1490068829&amp;sr=1-6&amp;keywords=i7+NUC">$350 on Amazon</a></li>
+<li>GIGABYTE BRIX Gaming- i7-4710HQ/GTX 760 – <a href="https://www.amazon.com/dp/B00OJZVGFU/ref=cm_sw_su_dp">$850 on Amazon</a></li>
+<li>Intel NUC Skullcanyon – i7-6770HQ – <a href="https://www.amazon.com/dp/B01DJ9XS52/ref=cm_sw_su_dp">$570 on Amazon</a></li>
+<li>ODROID-XU4 – Exynos5 2GHz 8-core – <a href="http://ameridroid.com/products/odroid-xu4">$77 on Ameridroid</a></li>
+<li>ODROID-C2 – Cortex A53 2GHz 4-core – <a href="http://ameridroid.com/products/odroid-c2">$42 on Ameridroid</a></li>
+<li>Rasberry Pi 3 – Cortex A53 1.2GHz 4-core – <a href="https://www.amazon.com/dp/B01CD5VC92/ref=cm_sw_su_dp">$36 on Amazon</a></li>
+<li>NVIDIA Tegra TX1 - Cortex-A57 4-core CPU, 256-core Maxwell GPU - <a href="http://www.nvidia.com/object/embedded-systems-dev-kits-modules.html">$435 from NVIDA</a> (Educational Discounts Available)</li>
+<li>NVIDIA Tegra TX2 - 6-core ARMv8 64-bit CPU (4-core Cortex-A57, 2-core NVIDIA Denver 2), 8GB RAM, 256-core Pascal GPU - <a href="https://developer.nvidia.com/embedded/buy/jetson-tx2-devkit">$600 from NVIDA</a> (Educational Discounts Available)</li>
+</ul>
+<p>It is possible to pair the TX1 and TX2 with a CTI Orbitty carrier board for more compact builds.</p>
+<h3 id="wi-fi">Wi-Fi<a class="headerlink" href="#wi-fi" title="Permanent link">&para;</a></h3>
+<p>You will need Wi-Fi to communicate with your MAV when it is in the air. Because ROS communicates over TCP, it is very easy to use ROS to view what is going on in your MAV while it is flying by sending commands and reading sensor data. For most applications, a standard Wi-Fi router and dongle will suffice. For long-range applications, you may want to look into <a href="https://www.ubnt.com/">Ubiquiti</a> point-to-point Wi-Fi. (We have seen ranges over a mile with these networks.)</p>
+<h3 id="rc-transmitter-and-receiver">RC Transmitter and Receiver<a class="headerlink" href="#rc-transmitter-and-receiver" title="Permanent link">&para;</a></h3>
+<p>For RC Control, you will need a transmitter with between 6 and 8 channels. Any additional channels will be wasted. We require RC control for safe operation, and only support arming and disarming via RC control.</p>
+<p>ROSflight only supports PPM (pulse position modulation) and SBUS receivers. Individual channel PWM outputs are not supported. A common RC setup is listed here, but is meant as an example. Any configurations with PPM or SBUS and 6-8 channels will be sufficient.</p>
+<ul>
+<li>Transmitter – <a href="https://www.getfpv.com/frsky-taranis-q-x7-2-4ghz-16ch-transmitter-white.html">FrSky Taranis QX7 ($105 on getfpv.com)</a></li>
+<li>Receiver – <a href="https://www.getfpv.com/frsky-d4r-ii-4ch-2-4ghz-accst-receiver-w-telemetry.html">FrSky D4R-II (24.99 on getfpv.com)</a></li>
+</ul>
+<h3 id="laptop-or-base-station-computer">Laptop or Base Station Computer<a class="headerlink" href="#laptop-or-base-station-computer" title="Permanent link">&para;</a></h3>
+<p>You will need a laptop which can run Ubuntu 16.04 or 18.04 with ROS to communicate with the MAV over the ground station wireless network. If you are new to Linux, and want to retain access to Windows, I would recommend dual booting your computer rather than using a virtual machine. ROS networking can be problematic from a virtual environment.</p>
+<h3 id="joystick">Joystick<a class="headerlink" href="#joystick" title="Permanent link">&para;</a></h3>
+<p>A joystick is used for <a href="../gazebo_simulation/">software-in-the-loop (SIL) simulations</a>. The joystick is not technically a required component because it is possible to control your MAV from the command line, but it makes things much easier. Our first recommendation is to use the same Taranis QX7 transmitter you use for hardware as a joystick by plugging it into the computer via USB. We also support RealFlight controllers and XBOX 360 controllers. Other joysticks are supported, but you may need to create custom axis and button mappings.</p>
+<h2 id="wiring-diagram">Wiring Diagram<a class="headerlink" href="#wiring-diagram" title="Permanent link">&para;</a></h2>
+<p>Below is an example wiring diagram for a multirotor using an MSI Cubi as a companion computer. This diagram also includes the motor power switch, which allows for the sensors, flight controller, and companion computer to be powered on while the motors are off. This is a safer way to test sensors, code, etc. as the motors are unable to spin while the switch is off.</p>
+<p><img alt="Wiring Diagram" src="../images/Wiring_Diagram.png" /></p>
+<p>Your needs will likely be slightly different than what is shown. This is meant as an example only and can be adapted to fit your needs.</p>
+<h2 id="motor-layouts">Motor Layouts<a class="headerlink" href="#motor-layouts" title="Permanent link">&para;</a></h2>
+<p>The desired mixer can be chosen by setting the <code>MIXER</code> parameter to the following values:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Mixer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>ESC calibration</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Quad +</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Quad X</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Hex +</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Hex X</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Octo +</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Octo X</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Y6</td>
+</tr>
+<tr>
+<td>8</td>
+<td>X8</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Tricopter</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Fixed-wing (traditional AETR)</td>
+</tr>
+</tbody>
+</table>
+<p>The associated motor layouts are shown below for each mixer.
+The <strong>ESC calibration</strong> mixer directly outputs the throttle command equally to each motor, and can be used for calibrating the ESCs.</p>
+<p><img alt="Mixer_1" src="../images/mixers_1.png" /></p>
+<p><img alt="Mixer_2" src="../images/mixers_2.png" /></p>
+<h2 id="connecting-to-the-flight-controller">Connecting to the Flight Controller<a class="headerlink" href="#connecting-to-the-flight-controller" title="Permanent link">&para;</a></h2>
+<p>The flight controller communicates with the companion computer over a serial link. ROSflight only supports one serial connection at a time and by default should be the serial link connected to the USB connector on the board.</p>
+<h3 id="using-secondary-serial-links">Using Secondary Serial Links<a class="headerlink" href="#using-secondary-serial-links" title="Permanent link">&para;</a></h3>
+<p>In the case of an F4 flight controller, which has a USB peripheral, the highest bandwidth connection will be the USB connector. However, UART3 can also be used to communicate with the companion computer if you desire a more secure connection (micro USB connectors have been known to disconnect in high vibrations), or if you would like to use a telemetry radio for remote control.</p>
+<p>If a USB connection is detected on the USB peripheral, ROSflight will direct all communication through this port. However, if the <code>PARAM_SERIAL_DEVICE</code> parameter is set to <code>3</code> and the <code>PARAM_BAUD_RATE</code> parameter is set properly, then UART3 will be enabled when the USB connection is absent.</p>
+<p>We have had the most sucess with the SiK radios (AKA 3DR telemetry radios). These require a 5V supply and ground and connect directly to the UART3 pins. We like the SiK radios because they can be easily configured using the <code>AT-commands</code>, which are used by <a href="http://ardupilot.org/planner/">MissionPlanner</a> (Windows only), <a href="https://community.emlid.com/t/sikset-py-a-python-script-to-easily-control-your-rfd900-3dr-radio-from-the-command-line/3654">sikset.py</a> or with the <a href="http://files.rfdesign.com.au/Files/documents/Software%20manual.pdf">AT-commands</a> directly on the command line. There are a number of configuration options available which should be used to optimize the radios for their intended usage.</p>
+<p>This is just an example; any UART-based communication interface should be supported through this interface.</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../getting-started/" title="Getting Started" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Getting Started
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../flight-controller-setup/" title="Flight Controller Setup" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Flight Controller Setup
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2019, James Jackson and Daniel Koch, BYU MAGICC Lab
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>

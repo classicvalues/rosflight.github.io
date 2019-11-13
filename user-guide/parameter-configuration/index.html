@@ -1,0 +1,1891 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="A lean, open-source autopilot system built by researchers, for researchers">
+      
+      
+        <link rel="canonical" href="http://rosflight.org/user-guide/parameter-configuration/">
+      
+      
+        <meta name="author" content="James Jackson, Daniel Koch">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+    
+    
+      
+        <title>Parameter Configuration - ROSflight</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#546e7a">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-96018590-2", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue-grey" data-md-color-accent="red">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#parameters" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://rosflight.org" title="ROSflight" class="md-header-nav__button md-logo">
+          
+            <img src="../../assets/logo.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              ROSflight
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Parameter Configuration
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../overview/" class="md-tabs__link md-tabs__link--active">
+          User Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../developer-guide/contribution-guidelines/" class="md-tabs__link">
+          Developer Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../algorithms/estimator/" class="md-tabs__link">
+          Algorithms
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://rosflight.org" title="ROSflight" class="md-nav__button md-logo">
+      
+        <img src="../../assets/logo.png" width="48" height="48">
+      
+    </a>
+    ROSflight
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      User Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        User Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../hardware-setup/" title="Hardware Setup" class="md-nav__link">
+      Hardware Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../flight-controller-setup/" title="Flight Controller Setup" class="md-nav__link">
+      Flight Controller Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../rc-configuration/" title="RC Configuration" class="md-nav__link">
+      RC Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ros-setup/" title="ROS Setup" class="md-nav__link">
+      ROS Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Parameter Configuration
+      </label>
+    
+    <a href="./" title="Parameter Configuration" class="md-nav__link md-nav__link--active">
+      Parameter Configuration
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parameter-interface" class="md-nav__link">
+    Parameter Interface
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getting-parameter-values" class="md-nav__link">
+    Getting Parameter Values
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-parameters" class="md-nav__link">
+    Changing Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#writing-parameters" class="md-nav__link">
+    Writing Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backing-up-and-loading-parameters-from-file" class="md-nav__link">
+    Backing Up and Loading Parameters from File
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fixed-wing-parameter-configuration" class="md-nav__link">
+    Fixed-Wing Parameter Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#description-of-all-parameters" class="md-nav__link">
+    Description of all Parameters
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../preflight-checks/" title="Pre-Flight Checks" class="md-nav__link">
+      Pre-Flight Checks
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../performance/" title="Improving Performance" class="md-nav__link">
+      Improving Performance
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../gazebo_simulation/" title="Running Gazebo Simulation" class="md-nav__link">
+      Running Gazebo Simulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../autonomous-flight/" title="Autonomous Flight" class="md-nav__link">
+      Autonomous Flight
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Developer Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Developer Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/contribution-guidelines/" title="Contribution Guidelines" class="md-nav__link">
+      Contribution Guidelines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/style-guide/" title="Style Guide" class="md-nav__link">
+      Style Guide
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/code-architecture/" title="Code Architecture" class="md-nav__link">
+      Code Architecture
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/building-flashing/" title="Building and Flashing" class="md-nav__link">
+      Building and Flashing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/unit-tests/" title="Unit Tests" class="md-nav__link">
+      Unit Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/debugging/" title="Using a Debugger" class="md-nav__link">
+      Using a Debugger
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/writing-documentation/" title="Writing Documentation" class="md-nav__link">
+      Writing Documentation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Algorithms
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Algorithms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../algorithms/estimator/" title="Estimator" class="md-nav__link">
+      Estimator
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#parameter-interface" class="md-nav__link">
+    Parameter Interface
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getting-parameter-values" class="md-nav__link">
+    Getting Parameter Values
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changing-parameters" class="md-nav__link">
+    Changing Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#writing-parameters" class="md-nav__link">
+    Writing Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backing-up-and-loading-parameters-from-file" class="md-nav__link">
+    Backing Up and Loading Parameters from File
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fixed-wing-parameter-configuration" class="md-nav__link">
+    Fixed-Wing Parameter Configuration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#description-of-all-parameters" class="md-nav__link">
+    Description of all Parameters
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/rosflight/firmware/blob/master/docs/user-guide/parameter-configuration.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h1>
+<p>The ROSflight firmware has several dozen parameters which it uses to customize performance. Parameters are considered semi-static variables. That is, parameters do not change during flight, but they may change between vehicles. Examples of parameters you may wish to change are:</p>
+<ul>
+<li>Fixed-wing vehicle flag</li>
+<li>PID gains</li>
+<li>Mixer choice</li>
+<li>IMU low-pass filter constant</li>
+<li>RC receiver type (PPM or SBUS)</li>
+</ul>
+<p>and so on. Access to all parameters is enabled via ROS services advertised by <code>rosflight_io</code> while the flight controller is connected.</p>
+<h2 id="parameter-interface">Parameter Interface<a class="headerlink" href="#parameter-interface" title="Permanent link">&para;</a></h2>
+<h3 id="getting-parameter-values">Getting Parameter Values<a class="headerlink" href="#getting-parameter-values" title="Permanent link">&para;</a></h3>
+<p>Sometimes it is handy to ask the flight controller what the current value of a parameter is. This is accomplished using the <code>param_get</code> service. As an example, let's retrieve the roll angle controller proportional (P) gain.</p>
+<div class="codehilite"><pre><span></span>rosservice call /param_get PID_ROLL_ANG_P
+</pre></div>
+
+<p>You should get a response similar to the following (this happens to be the default value with floating-point error):</p>
+<div class="codehilite"><pre><span></span>exists: True
+value: 0.15000000596
+</pre></div>
+
+<h3 id="changing-parameters">Changing Parameters<a class="headerlink" href="#changing-parameters" title="Permanent link">&para;</a></h3>
+<p>Parameters are changed via the <code>param_set</code> service. As an example, let's change the roll angle controller P gain. (I will assume that the flight controller is connected and <code>rosflight_io</code> is running in the root namespace.)</p>
+<div class="codehilite"><pre><span></span>rosservice call /param_set PID_ROLL_ANG_P 0.08
+</pre></div>
+
+<p>You should get a prompt from <code>rosflight_io</code> saying
+<div class="codehilite"><pre><span></span>[ INFO] [1491672408.585339558]: Parameter PID_ROLL_ANG_P has new value 0.08
+[ WARN] [1491672408.585508849]: There are unsaved changes to onboard parameters
+</pre></div></p>
+<p>Notice that the parameters have been set, but not saved. Parameter changes take effect immediately, however they will not persist over a reboot unless you <em>write</em> them to the non-volatile memory. This brings us to the next task.</p>
+<h3 id="writing-parameters">Writing Parameters<a class="headerlink" href="#writing-parameters" title="Permanent link">&para;</a></h3>
+<p>To ensure that parameter values persist between reboots, you must write the parameters to the non-volatile memory. This is done by calling <code>param_write</code></p>
+<div class="codehilite"><pre><span></span>rosservice call /param_write
+</pre></div>
+
+<div class="admonition error">
+<p class="admonition-title">Error</p>
+<p>Parameter writing can only happen if the flight controller is disarmed. If the param write failed for some reason, you may want to make sure your FC is disarmed and try again.</p>
+</div>
+<h3 id="backing-up-and-loading-parameters-from-file">Backing Up and Loading Parameters from File<a class="headerlink" href="#backing-up-and-loading-parameters-from-file" title="Permanent link">&para;</a></h3>
+<p>It is good practice to backup your parameter configuration in case you have to re-flash your firmware or you want to share configurations between vehicles. We can do this via the <code>param_save_to_file</code> and <code>param_load_from_file</code> services.</p>
+<p>First, let's back up our current parameter configuration:</p>
+<div class="codehilite"><pre><span></span>rosservice call /param_save_to_file ~/parameters.yml
+</pre></div>
+
+<p>Parameters are saved in YAML format. You must also specify the absolute file name of where you would like your parameters to be saved. The current active set of parameters will be saved, regardless of what is saved in non-volatile memory on the flight controller.</p>
+<p>Now, let's say we want to re-load this parameter file
+<div class="codehilite"><pre><span></span>rosservice call /param_load_from_file ~/parameters.yml
+</pre></div>
+Again, you must specify the absolute file name of the file to be loaded.</p>
+<h2 id="fixed-wing-parameter-configuration">Fixed-Wing Parameter Configuration<a class="headerlink" href="#fixed-wing-parameter-configuration" title="Permanent link">&para;</a></h2>
+<p>Because ROSflight ships with default parameters for multirotors, you will probably want to change the following parameters if you want to fly a fixed-wing aircraft.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Fixed-Wing Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MOTOR_PWM_UPDATE</td>
+<td>Refresh rate of motor commands to motors and servos (Hz) - See motor documentation</td>
+<td>int</td>
+<td>50</td>
+</tr>
+<tr>
+<td>ARM_SPIN_MOTORS</td>
+<td>Enforce MOTOR_IDLE_PWM</td>
+<td>int</td>
+<td>false</td>
+</tr>
+<tr>
+<td>MOTOR_IDLE_THR</td>
+<td>min throttle command sent to motors when armed (Set above 0.1 to spin when armed)</td>
+<td>float</td>
+<td>0.1</td>
+</tr>
+<tr>
+<td>ARM_CHANNEL</td>
+<td>RC switch channel mapped to arming [0 indexed, -1 to disable]</td>
+<td>int</td>
+<td>4</td>
+</tr>
+<tr>
+<td>FIXED_WING</td>
+<td>switches on passthrough commands for fixed-wing operation</td>
+<td>int</td>
+<td>true</td>
+</tr>
+<tr>
+<td>MIXER</td>
+<td>Which mixer to choose - See <a href="../hardware-setup/#motor-layouts">Mixer documentation</a></td>
+<td>int</td>
+<td>10</td>
+</tr>
+<tr>
+<td>ELEVATOR_REV</td>
+<td>reverses elevator servo output</td>
+<td>int</td>
+<td>0/1</td>
+</tr>
+<tr>
+<td>AIL_REV</td>
+<td>reverses aileron servo output</td>
+<td>int</td>
+<td>0/1</td>
+</tr>
+<tr>
+<td>RUDDER_REV</td>
+<td>reverses rudder servo output</td>
+<td>int</td>
+<td>0/1</td>
+</tr>
+<tr>
+<td>CAL_GYRO_ARM</td>
+<td>Calibrate gyros when arming - generally only for multirotors</td>
+<td>int</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h2 id="description-of-all-parameters">Description of all Parameters<a class="headerlink" href="#description-of-all-parameters" title="Permanent link">&para;</a></h2>
+<p>This is a list of all ROSflight parameters, including their types, default values, and minimum and maximum recommended values:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default Value</th>
+<th>Min</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BAUD_RATE</td>
+<td>Baud rate of MAVlink communication with companion computer</td>
+<td>int</td>
+<td>921600</td>
+<td>9600</td>
+<td>921600</td>
+</tr>
+<tr>
+<td>SERIAL_DEVICE</td>
+<td>Serial Port (for supported devices)</td>
+<td>int</td>
+<td>0</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>SYS_ID</td>
+<td>Mavlink System ID</td>
+<td>int</td>
+<td>1</td>
+<td>1</td>
+<td>255</td>
+</tr>
+<tr>
+<td>STRM_HRTBT</td>
+<td>Rate of heartbeat stream (Hz)</td>
+<td>int</td>
+<td>1</td>
+<td>0</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>STRM_STATUS</td>
+<td>Rate of status stream (Hz)</td>
+<td>int</td>
+<td>10</td>
+<td>0</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>STRM_ATTITUDE</td>
+<td>Rate of attitude stream (Hz)</td>
+<td>int</td>
+<td>200</td>
+<td>0</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>STRM_IMU</td>
+<td>Rate of IMU stream (Hz)</td>
+<td>int</td>
+<td>250</td>
+<td>0</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>STRM_MAG</td>
+<td>Rate of magnetometer stream (Hz)</td>
+<td>int</td>
+<td>50</td>
+<td>0</td>
+<td>75</td>
+</tr>
+<tr>
+<td>STRM_BARO</td>
+<td>Rate of barometer stream (Hz)</td>
+<td>int</td>
+<td>50</td>
+<td>0</td>
+<td>100</td>
+</tr>
+<tr>
+<td>STRM_AIRSPEED</td>
+<td>Rate of airspeed stream (Hz)</td>
+<td>int</td>
+<td>50</td>
+<td>0</td>
+<td>50</td>
+</tr>
+<tr>
+<td>STRM_SONAR</td>
+<td>Rate of sonar stream (Hz)</td>
+<td>int</td>
+<td>40</td>
+<td>0</td>
+<td>40</td>
+</tr>
+<tr>
+<td>STRM_SERVO</td>
+<td>Rate of raw output stream</td>
+<td>int</td>
+<td>50</td>
+<td>0</td>
+<td>490</td>
+</tr>
+<tr>
+<td>STRM_RC</td>
+<td>Rate of raw RC input stream</td>
+<td>int</td>
+<td>50</td>
+<td>0</td>
+<td>50</td>
+</tr>
+<tr>
+<td>STRM_GNSS</td>
+<td>Maximum rate of GNSS data streaming. Higher values allow for lower latency</td>
+<td>int</td>
+<td>1000</td>
+<td>0</td>
+<td>1000</td>
+</tr>
+<tr>
+<td>STRM_GNSS_RAW</td>
+<td>Maximum rate of raw GNSS data streaming</td>
+<td>int</td>
+<td>0</td>
+<td>0</td>
+<td>10</td>
+</tr>
+<tr>
+<td>PARAM_MAX_CMD</td>
+<td>saturation point for PID controller output</td>
+<td>float</td>
+<td>1.0</td>
+<td>0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>PID_ROLL_RATE_P</td>
+<td>Roll Rate Proportional Gain</td>
+<td>float</td>
+<td>0.070f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_ROLL_RATE_I</td>
+<td>Roll Rate Integral Gain</td>
+<td>float</td>
+<td>0.000f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_ROLL_RATE_D</td>
+<td>Roll Rate Derivative Gain</td>
+<td>float</td>
+<td>0.000f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_PITCH_RATE_P</td>
+<td>Pitch Rate Proportional Gain</td>
+<td>float</td>
+<td>0.070f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_PITCH_RATE_I</td>
+<td>Pitch Rate Integral Gain</td>
+<td>float</td>
+<td>0.0000f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_PITCH_RATE_D</td>
+<td>Pitch Rate Derivative Gain</td>
+<td>float</td>
+<td>0.0000f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_YAW_RATE_P</td>
+<td>Yaw Rate Proportional Gain</td>
+<td>float</td>
+<td>0.25f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_YAW_RATE_I</td>
+<td>Yaw Rate Integral Gain</td>
+<td>float</td>
+<td>0.0f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_YAW_RATE_D</td>
+<td>Yaw Rate Derivative Gain</td>
+<td>float</td>
+<td>0.0f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_ROLL_ANG_P</td>
+<td>Roll Angle Proportional Gain</td>
+<td>float</td>
+<td>0.15f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_ROLL_ANG_I</td>
+<td>Roll Angle Integral Gain</td>
+<td>float</td>
+<td>0.0f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_ROLL_ANG_D</td>
+<td>Roll Angle Derivative Gain</td>
+<td>float</td>
+<td>0.05f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_PITCH_ANG_P</td>
+<td>Pitch Angle Proportional Gain</td>
+<td>float</td>
+<td>0.15f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_PITCH_ANG_I</td>
+<td>Pitch Angle Integral Gain</td>
+<td>float</td>
+<td>0.0f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>PID_PITCH_ANG_D</td>
+<td>Pitch Angle Derivative Gain</td>
+<td>float</td>
+<td>0.05f</td>
+<td>0.0</td>
+<td>1000.0</td>
+</tr>
+<tr>
+<td>X_EQ_TORQUE</td>
+<td>Equilibrium torque added to output of controller on x axis</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Y_EQ_TORQUE</td>
+<td>Equilibrium torque added to output of controller on y axis</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>Z_EQ_TORQUE</td>
+<td>Equilibrium torque added to output of controller on z axis</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>PID_TAU</td>
+<td>Dirty Derivative time constant - See controller documentation</td>
+<td>float</td>
+<td>0.05f</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>MOTOR_PWM_UPDATE</td>
+<td>Overrides default PWM rate specified by mixer if non-zero - Requires reboot to take effect</td>
+<td>int</td>
+<td>0</td>
+<td>0</td>
+<td>490</td>
+</tr>
+<tr>
+<td>MOTOR_IDLE_THR</td>
+<td>min throttle command sent to motors when armed (Set above 0.1 to spin when armed)</td>
+<td>float</td>
+<td>0.1</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>FAILSAFE_THR</td>
+<td>Throttle sent to motors in failsafe condition (set just below hover throttle)</td>
+<td>float</td>
+<td>0.3</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>ARM_SPIN_MOTORS</td>
+<td>Enforce MOTOR_IDLE_THR</td>
+<td>int</td>
+<td>true</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>FILTER_INIT_T</td>
+<td>Time in ms to initialize estimator</td>
+<td>int</td>
+<td>3000</td>
+<td>0</td>
+<td>100000</td>
+</tr>
+<tr>
+<td>FILTER_KP</td>
+<td>estimator proportional gain - See estimator documentation</td>
+<td>float</td>
+<td>0.5f</td>
+<td>0</td>
+<td>10.0</td>
+</tr>
+<tr>
+<td>FILTER_KI</td>
+<td>estimator integral gain - See estimator documentation</td>
+<td>float</td>
+<td>0.01f</td>
+<td>0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>FILTER_KP_COR</td>
+<td>estimator proportional gain on external attitude correction - See estimator documentation</td>
+<td>float</td>
+<td>10.0f</td>
+<td>0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>FILTER_ACCMARGIN</td>
+<td>allowable accel norm margin around 1g to determine if accel is usable</td>
+<td>float</td>
+<td>0.1f</td>
+<td>0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>FILTER_QUAD_INT</td>
+<td>Perform a quadratic averaging of LPF gyro data prior to integration (adds ~20 us to estimation loop on F1 processors)</td>
+<td>int</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>FILTER_MAT_EXP</td>
+<td>1 - Use matrix exponential to improve gyro integration (adds ~90 us to estimation loop in F1 processors) 0 - use euler integration</td>
+<td>int</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>FILTER_USE_ACC</td>
+<td>Use accelerometer to correct gyro integration drift (adds ~70 us to estimation loop)</td>
+<td>int</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>CAL_GYRO_ARM</td>
+<td>True if desired to calibrate gyros on arm</td>
+<td>int</td>
+<td>false</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>GYROXY_LPF_ALPHA</td>
+<td>Low-pass filter constant on gyro X and Y axes - See estimator documentation</td>
+<td>float</td>
+<td>0.3f</td>
+<td>0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>GYROZ_LPF_ALPHA</td>
+<td>Low-pass filter constant on gyro Z axis - See estimator documentation</td>
+<td>float</td>
+<td>0.3f</td>
+<td>0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>ACC_LPF_ALPHA</td>
+<td>Low-pass filter constant on all accel axes - See estimator documentation</td>
+<td>float</td>
+<td>0.5f</td>
+<td>0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>GYRO_X_BIAS</td>
+<td>Constant x-bias of gyroscope readings</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>GYRO_Y_BIAS</td>
+<td>Constant y-bias of gyroscope readings</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>GYRO_Z_BIAS</td>
+<td>Constant z-bias of gyroscope readings</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-1.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>ACC_X_BIAS</td>
+<td>Constant x-bias of accelerometer readings</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>ACC_Y_BIAS</td>
+<td>Constant y-bias of accelerometer readings</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>ACC_Z_BIAS</td>
+<td>Constant z-bias of accelerometer readings</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>ACC_X_TEMP_COMP</td>
+<td>Linear x-axis temperature compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>ACC_Y_TEMP_COMP</td>
+<td>Linear y-axis temperature compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>ACC_Z_TEMP_COMP</td>
+<td>Linear z-axis temperature compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-2.0</td>
+<td>2.0</td>
+</tr>
+<tr>
+<td>MAG_A11_COMP</td>
+<td>Soft iron compensation constant</td>
+<td>float</td>
+<td>1.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>MAG_A12_COMP</td>
+<td>Soft iron compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>MAG_A13_COMP</td>
+<td>Soft iron compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>MAG_A21_COMP</td>
+<td>Soft iron compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>MAG_A22_COMP</td>
+<td>Soft iron compensation constant</td>
+<td>float</td>
+<td>1.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>MAG_A23_COMP</td>
+<td>Soft iron compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>MAG_A31_COMP</td>
+<td>Soft iron compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>MAG_A32_COMP</td>
+<td>Soft iron compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>MAG_A33_COMP</td>
+<td>Soft iron compensation constant</td>
+<td>float</td>
+<td>1.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>MAG_X_BIAS</td>
+<td>Hard iron compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>MAG_Y_BIAS</td>
+<td>Hard iron compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>MAG_Z_BIAS</td>
+<td>Hard iron compensation constant</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-999.0</td>
+<td>999.0</td>
+</tr>
+<tr>
+<td>BARO_BIAS</td>
+<td>Barometer measurement bias (Pa)</td>
+<td>float</td>
+<td>0.0f</td>
+<td>0</td>
+<td>inf</td>
+</tr>
+<tr>
+<td>GROUND_LEVEL</td>
+<td>Altitude of ground level (m)</td>
+<td>float</td>
+<td>1387.0f</td>
+<td>-1000</td>
+<td>10000</td>
+</tr>
+<tr>
+<td>DIFF_PRESS_BIAS</td>
+<td>Differential Pressure Bias (Pa)</td>
+<td>float</td>
+<td>0.0f</td>
+<td>-10</td>
+<td>10</td>
+</tr>
+<tr>
+<td>RC_TYPE</td>
+<td>Type of RC input 0 - PPM, 1 - SBUS</td>
+<td>int</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>RC_X_CHN</td>
+<td>RC input channel mapped to x-axis commands [0 - indexed]</td>
+<td>int</td>
+<td>0</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>RC_Y_CHN</td>
+<td>RC input channel mapped to y-axis commands [0 - indexed]</td>
+<td>int</td>
+<td>1</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>RC_Z_CHN</td>
+<td>RC input channel mapped to z-axis commands [0 - indexed]</td>
+<td>int</td>
+<td>3</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>RC_F_CHN</td>
+<td>RC input channel mapped to F-axis commands [0 - indexed]</td>
+<td>int</td>
+<td>2</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>RC_ATT_OVRD_CHN</td>
+<td>RC switch mapped to attitude override [0 indexed, -1 to disable]</td>
+<td>int</td>
+<td>4</td>
+<td>4</td>
+<td>7</td>
+</tr>
+<tr>
+<td>RC_THR_OVRD_CHN</td>
+<td>RC switch channel mapped to throttle override [0 indexed, -1 to disable]</td>
+<td>int</td>
+<td>4</td>
+<td>4</td>
+<td>7</td>
+</tr>
+<tr>
+<td>RC_ATT_CTRL_CHN</td>
+<td>RC switch channel mapped to attitude control type [0 indexed, -1 to disable]</td>
+<td>int</td>
+<td>-1</td>
+<td>4</td>
+<td>7</td>
+</tr>
+<tr>
+<td>ARM_CHANNEL</td>
+<td>RC switch channel mapped to arming (only if PARAM_ARM_STICKS is false) [0 indexed, -1 to disable]</td>
+<td>int</td>
+<td>-1</td>
+<td>4</td>
+<td>7</td>
+</tr>
+<tr>
+<td>RC_NUM_CHN</td>
+<td>number of RC input channels</td>
+<td>int</td>
+<td>6</td>
+<td>1</td>
+<td>8</td>
+</tr>
+<tr>
+<td>SWITCH_5_DIR</td>
+<td>RC switch 5 toggle direction</td>
+<td>int</td>
+<td>1</td>
+<td>-1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>SWITCH_6_DIR</td>
+<td>RC switch 6 toggle direction</td>
+<td>int</td>
+<td>1</td>
+<td>-1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>SWITCH_7_DIR</td>
+<td>RC switch 7 toggle direction</td>
+<td>int</td>
+<td>1</td>
+<td>-1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>SWITCH_8_DIR</td>
+<td>RC switch 8 toggle direction</td>
+<td>int</td>
+<td>1</td>
+<td>-1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>RC_OVRD_DEV</td>
+<td>RC stick deviation from center for override</td>
+<td>float</td>
+<td>0.1</td>
+<td>0.0</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>OVRD_LAG_TIME</td>
+<td>RC stick deviation lag time before returning control (ms)</td>
+<td>int</td>
+<td>1000</td>
+<td>0</td>
+<td>100000</td>
+</tr>
+<tr>
+<td>MIN_THROTTLE</td>
+<td>Take minimum throttle between RC and computer at all times</td>
+<td>int</td>
+<td>true</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>RC_ATT_MODE</td>
+<td>Attitude mode for RC sticks (0: rate, 1: angle). Overridden if RC_ATT_CTRL_CHN is set.</td>
+<td>int</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>RC_MAX_ROLL</td>
+<td>Maximum roll angle command sent by full deflection of RC sticks</td>
+<td>float</td>
+<td>0.786f</td>
+<td>0.0</td>
+<td>3.14159</td>
+</tr>
+<tr>
+<td>RC_MAX_PITCH</td>
+<td>Maximum pitch angle command sent by full stick deflection of RC sticks</td>
+<td>float</td>
+<td>0.786f</td>
+<td>0.0</td>
+<td>3.14159</td>
+</tr>
+<tr>
+<td>RC_MAX_ROLLRATE</td>
+<td>Maximum roll rate command sent by full stick deflection of RC sticks</td>
+<td>float</td>
+<td>3.14159f</td>
+<td>0.0</td>
+<td>9.42477796077</td>
+</tr>
+<tr>
+<td>RC_MAX_PITCHRATE</td>
+<td>Maximum pitch command sent by full stick deflection of RC sticks</td>
+<td>float</td>
+<td>3.14159f</td>
+<td>0.0</td>
+<td>3.14159</td>
+</tr>
+<tr>
+<td>RC_MAX_YAWRATE</td>
+<td>Maximum pitch command sent by full stick deflection of RC sticks</td>
+<td>float</td>
+<td>1.507f</td>
+<td>0.0</td>
+<td>3.14159</td>
+</tr>
+<tr>
+<td>MIXER</td>
+<td>Which mixer to choose - See Mixer documentation</td>
+<td>int</td>
+<td>Mixer::INVALID_MIXER</td>
+<td>0</td>
+<td>10</td>
+</tr>
+<tr>
+<td>FIXED_WING</td>
+<td>switches on pass-through commands for fixed-wing operation</td>
+<td>int</td>
+<td>false</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>ELEVATOR_REV</td>
+<td>reverses elevator servo output</td>
+<td>int</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>AIL_REV</td>
+<td>reverses aileron servo output</td>
+<td>int</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>RUDDER_REV</td>
+<td>reverses rudder servo output</td>
+<td>int</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>FC_ROLL</td>
+<td>roll angle (deg) of flight controller wrt aircraft body</td>
+<td>float</td>
+<td>0.0f</td>
+<td>0</td>
+<td>360</td>
+</tr>
+<tr>
+<td>FC_PITCH</td>
+<td>pitch angle (deg) of flight controller wrt aircraft body</td>
+<td>float</td>
+<td>0.0f</td>
+<td>0</td>
+<td>360</td>
+</tr>
+<tr>
+<td>FC_YAW</td>
+<td>yaw angle (deg) of flight controller wrt aircraft body</td>
+<td>float</td>
+<td>0.0f</td>
+<td>0</td>
+<td>360</td>
+</tr>
+<tr>
+<td>ARM_THRESHOLD</td>
+<td>RC deviation from max/min in yaw and throttle for arming and disarming check (us)</td>
+<td>float</td>
+<td>0.15</td>
+<td>0</td>
+<td>500</td>
+</tr>
+<tr>
+<td>OFFBOARD_TIMEOUT</td>
+<td>Timeout in milliseconds for offboard commands, after which RC override is activated</td>
+<td>int</td>
+<td>100</td>
+<td>0</td>
+<td>100000</td>
+</tr>
+</tbody>
+</table>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../ros-setup/" title="ROS Setup" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                ROS Setup
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../preflight-checks/" title="Pre-Flight Checks" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Pre-Flight Checks
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2019, James Jackson and Daniel Koch, BYU MAGICC Lab
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>

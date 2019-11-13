@@ -1,0 +1,973 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="A lean, open-source autopilot system built by researchers, for researchers">
+      
+      
+        <link rel="canonical" href="http://rosflight.org/user-guide/performance/">
+      
+      
+        <meta name="author" content="James Jackson, Daniel Koch">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+    
+    
+      
+        <title>Improving Performance - ROSflight</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#546e7a">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-96018590-2", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue-grey" data-md-color-accent="red">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#improving-performance" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://rosflight.org" title="ROSflight" class="md-header-nav__button md-logo">
+          
+            <img src="../../assets/logo.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              ROSflight
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Improving Performance
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../overview/" class="md-tabs__link md-tabs__link--active">
+          User Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../developer-guide/contribution-guidelines/" class="md-tabs__link">
+          Developer Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../algorithms/estimator/" class="md-tabs__link">
+          Algorithms
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://rosflight.org" title="ROSflight" class="md-nav__button md-logo">
+      
+        <img src="../../assets/logo.png" width="48" height="48">
+      
+    </a>
+    ROSflight
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      User Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        User Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../hardware-setup/" title="Hardware Setup" class="md-nav__link">
+      Hardware Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../flight-controller-setup/" title="Flight Controller Setup" class="md-nav__link">
+      Flight Controller Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../rc-configuration/" title="RC Configuration" class="md-nav__link">
+      RC Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../ros-setup/" title="ROS Setup" class="md-nav__link">
+      ROS Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../parameter-configuration/" title="Parameter Configuration" class="md-nav__link">
+      Parameter Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../preflight-checks/" title="Pre-Flight Checks" class="md-nav__link">
+      Pre-Flight Checks
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Improving Performance
+      </label>
+    
+    <a href="./" title="Improving Performance" class="md-nav__link md-nav__link--active">
+      Improving Performance
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gain-tuning" class="md-nav__link">
+    Gain Tuning
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tuning-roll-and-pitch-angles" class="md-nav__link">
+    Tuning Roll and Pitch angles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-yaw-rate" class="md-nav__link">
+    Tuning Yaw rate
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rc-trim" class="md-nav__link">
+    RC trim
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estimator-tuning" class="md-nav__link">
+    Estimator Tuning
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tuning-the-low-pass-filter-gains" class="md-nav__link">
+    Tuning the Low-Pass Filter Gains
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-the-complementary-filter" class="md-nav__link">
+    Tuning the Complementary Filter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-attitude-measurements" class="md-nav__link">
+    External Attitude Measurements
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../gazebo_simulation/" title="Running Gazebo Simulation" class="md-nav__link">
+      Running Gazebo Simulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../autonomous-flight/" title="Autonomous Flight" class="md-nav__link">
+      Autonomous Flight
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Developer Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Developer Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/contribution-guidelines/" title="Contribution Guidelines" class="md-nav__link">
+      Contribution Guidelines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/style-guide/" title="Style Guide" class="md-nav__link">
+      Style Guide
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/code-architecture/" title="Code Architecture" class="md-nav__link">
+      Code Architecture
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/building-flashing/" title="Building and Flashing" class="md-nav__link">
+      Building and Flashing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/unit-tests/" title="Unit Tests" class="md-nav__link">
+      Unit Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/debugging/" title="Using a Debugger" class="md-nav__link">
+      Using a Debugger
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/writing-documentation/" title="Writing Documentation" class="md-nav__link">
+      Writing Documentation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Algorithms
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Algorithms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../algorithms/estimator/" title="Estimator" class="md-nav__link">
+      Estimator
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#gain-tuning" class="md-nav__link">
+    Gain Tuning
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tuning-roll-and-pitch-angles" class="md-nav__link">
+    Tuning Roll and Pitch angles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-yaw-rate" class="md-nav__link">
+    Tuning Yaw rate
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rc-trim" class="md-nav__link">
+    RC trim
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estimator-tuning" class="md-nav__link">
+    Estimator Tuning
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tuning-the-low-pass-filter-gains" class="md-nav__link">
+    Tuning the Low-Pass Filter Gains
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tuning-the-complementary-filter" class="md-nav__link">
+    Tuning the Complementary Filter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-attitude-measurements" class="md-nav__link">
+    External Attitude Measurements
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/rosflight/firmware/blob/master/docs/user-guide/performance.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="improving-performance">Improving Performance<a class="headerlink" href="#improving-performance" title="Permanent link">&para;</a></h1>
+<p>ROSflight supplies several methods to improve the performance of your aircraft. Tuning gains, adding feed-forward torques, and tuning the estimator are three ways to get your aircraft flying great!</p>
+<h2 id="gain-tuning">Gain Tuning<a class="headerlink" href="#gain-tuning" title="Permanent link">&para;</a></h2>
+<p>Because there are a wide variety of multirotors out there, no one set of PID controller gains will be optimal for all vehicles. The default set of gains is relatively conservative for most platforms, and should be somewhat airworthy in most cases. However, depending on the inertia-to-torque ratio on your MAV, you may have to change these gains considerably. There are some great tutorials online on multirotor gain tuning; this is another tried-and-true method used to great effect at BYU.</p>
+<p>If you are unfamiliar with PIDs, you should probably go read about them before trying to tune a multirotor. Getting an understanding for what is going on will definitely guide your decision making process as you try to find better gains.</p>
+<p>While tuning controller gains, it is very likely that the multirotor will oscillate out of control. To handle this scenario, we generally add what we call "training wheels" to the multirotors we are tuning. These amount to thin carbon rods in the shape of an X zip-tied to the landing gear. This widens out the base of the multirotor so if you come down on a hard oscillation, chances are the vehicle will land upright, hopefully without a prop strike, or worse, battery damage with a thermal runaway event. If the battery is not tucked inside the main frame, it is wise to add some foam as protection to the battery.</p>
+<p>Here is a video of a maiden flight of ROSflight with "training wheels" attached.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/T8_E1pIiAVQ" frameborder="0" allowfullscreen></iframe>
+
+<p>Now, for the procedure on tuning.</p>
+<h3 id="tuning-roll-and-pitch-angles">Tuning Roll and Pitch angles<a class="headerlink" href="#tuning-roll-and-pitch-angles" title="Permanent link">&para;</a></h3>
+<p>Here is a flowchart describing my PID tuning process for roll and pitch:</p>
+<p><img alt="tuning_flowchart" src="../images/tuning_flowchart.png" /></p>
+<p>You may want to do another D-tuning iteration. Additionally, sometimes it is helpful to do a little tweaking on roll and pitch separately to eek out a little more performance from the differences in roll and pitch dynamics of your vehicle.</p>
+<p>Notice that we did not include any <code>I</code> tuning. As a general rule, try to keep the <code>I</code> gain as low as possible. It will <em>always</em> slow your response rate to input, and it can induce low frequency oscillations.</p>
+<p>You should <em>only</em> have <code>I</code> gain on roll and pitch if one of the following is true:</p>
+<ol>
+<li>You expect your CG to change, and/or</li>
+<li>You expect your rotor geometry to change</li>
+</ol>
+<p>Both of these are pretty rare. Instead, use your RC transmitter to trim the aircraft so it hovers with no stick input. In the RC trim calculation section, we will use the RC trim to calculate a feed-forward torque on the roll, pitch and yaw rates.</p>
+<h3 id="tuning-yaw-rate">Tuning Yaw rate<a class="headerlink" href="#tuning-yaw-rate" title="Permanent link">&para;</a></h3>
+<p>Dynamically and algorithmically, using a <code>D</code> gain in yaw-rate control has no significant advantage. Controlling with derivative requires differentiating gyro measurements, which tends to be pretty noisy. In our experience, putting <code>D</code> in rate controllers on multirotors has always decreased performance.</p>
+<p>Tuning yaw rate is generally pretty easy. Basically, keep cranking it up until you feel like it's "locked in". Sometimes, a little bit of <code>I</code> (on the order of 0.1P) can help with this as well.</p>
+<p>The problem with too much <code>P</code> on yaw rate generally manifests itself in motor saturation. Some, especially larger, multirotors have problems getting enough control authority in yaw with the propellers being aligned flat. After you are done tuning, you might want to look at a plot of motor commands during a fairly aggressive flight. Underactuated yaw will be pretty obvious in these plots, because you will see the motor commands railing. To fix this, you can put shims between the arm mounts and the motors to tilt the motors just a little bit in the direction of yaw for that motor.</p>
+<h2 id="rc-trim">RC trim<a class="headerlink" href="#rc-trim" title="Permanent link">&para;</a></h2>
+<p>In the vast majority of cases, your multirotor will not be built perfectly. The CG could be slightly off, or your motors, speed controllers and propellers could be slightly different. One way to fix this is by adding an integrator. Integrators get rid of static offsets such as those just mentioned. However, as explained above, integrators also always slow vehicle response. In our case, since this offset is going to be constant, we can instead find a "feed-forward", or equilibrium offset, torque that you need to apply to hover without drift.</p>
+<p>Use the RC transmitter to find the "equilibrium torques" about the x, y, and z axes to keep the multirotor level. This is done by trimming the aircraft with the RC trims. These are usually the little switches next to the sticks on your transmitter. Adjust these until you can hover the multirotor without touching the sticks.</p>
+<p>Next, land the multirotor, disarm, center the sticks and perform a trim calibration with <code>rosservice call /calibrate_rc_trim</code>. ROSflight then uses the trim settings on your transmitter to find these feed-forward, or equilibrium, torques that need to be applied post-controller to keep the multirotor level. These torques will be applied to all future commands (both from the companion computer and RC), so <em>you will need to zero out your transmitter trims after calibration</em>.</p>
+<h2 id="estimator-tuning">Estimator Tuning<a class="headerlink" href="#estimator-tuning" title="Permanent link">&para;</a></h2>
+<p>ROSflight uses a non-linear complementary filter, based on the quaternion implementation of "<a href="http://ieeexplore.ieee.org/document/4608934/">Non-linear complementary filters on the special orthogonal group</a>" by Robert Mahony<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>,  to estimate attitude and angular rates. The implementation has been improved with suggestions from "<a href="https://arc.aiaa.org/doi/abs/10.2514/6.2013-4615">Attitude Representation and Kinematic Propagation for Low-Cost UAVs</a>" by Robert Casey<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>. A write-up of the derivation and implementation details can be found in the LaTeX report in <code>reports/estimator.tex</code>. (You'll need to be able to compile LaTeX sources to view the PDF).</p>
+<p>In addition to the complementary filter, accelerometer and gyro measurements are filtered using a simple low-pass filter (LPF) to cut out noise from vibrations. A block diagram of the estimator is shown below for reference. <span><span class="MathJax_Preview">y_{gyro}</span><script type="math/tex">y_{gyro}</script></span> and <span><span class="MathJax_Preview">y_{acc}</span><script type="math/tex">y_{acc}</script></span> are gyro and accelerometer measurements, respectively and <span><span class="MathJax_Preview">\beta_{gyro}</span><script type="math/tex">\beta_{gyro}</script></span> is the estimated gyro biases.</p>
+<p><img alt="CF_diagram" src="../images/CF_Diagram.png" /></p>
+<h3 id="tuning-the-low-pass-filter-gains">Tuning the Low-Pass Filter Gains<a class="headerlink" href="#tuning-the-low-pass-filter-gains" title="Permanent link">&para;</a></h3>
+<p>The <code>ACC_LPF_ALPHA</code> and <code>GYRO_LPF_ALPHA</code> parameters are used in the following low-pass-filter implementation (see lines <code>98-106</code> of <code>estimator.c</code>):</p>
+<div>
+<div class="MathJax_Preview">x_t = (1-\alpha)y_t + \alpha x_{t-1}</div>
+<script type="math/tex; mode=display">x_t = (1-\alpha)y_t + \alpha x_{t-1}</script>
+</div>
+<p>where <span><span class="MathJax_Preview">y_t</span><script type="math/tex">y_t</script></span> is the measurement and <span><span class="MathJax_Preview">x_t</span><script type="math/tex">x_t</script></span> is the filtered value. Lowering <span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span> will reduce lag in response, so if you feel like your MAV is sluggish despite all attempts at controller gain tuning, consider reducing <span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span>. Reducing <span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span> too far, however will result in a lot of noise from the sensors making its way into the motors. This can cause motors to get really hot, so make sure you check motor temperature if you are changing the low-pass filter constants.</p>
+<h3 id="tuning-the-complementary-filter">Tuning the Complementary Filter<a class="headerlink" href="#tuning-the-complementary-filter" title="Permanent link">&para;</a></h3>
+<p>The complementary filter has two gains, <span><span class="MathJax_Preview">k_p</span><script type="math/tex">k_p</script></span> and <span><span class="MathJax_Preview">k_i</span><script type="math/tex">k_i</script></span>. For a complete understanding of how these work, we recommend reading the Mahony Paper, or the technical report in the reports folder. In short, <span><span class="MathJax_Preview">k_p</span><script type="math/tex">k_p</script></span> can be thought of as the strength of accelerometer measurements in the filter, and the <span><span class="MathJax_Preview">k_i</span><script type="math/tex">k_i</script></span> gain is the integral constant on the gyro bias. These values should probably not be changed. Before you go changing these values, make sure you <em>completely</em> understand how they work in the filter.</p>
+<p>If you do decide to change these values, you should stick to the following rule of thumb.</p>
+<div>
+<div class="MathJax_Preview">k_i \approx \tfrac{k_p}{10}.</div>
+<script type="math/tex; mode=display">k_i \approx \tfrac{k_p}{10}.</script>
+</div>
+<h2 id="external-attitude-measurements">External Attitude Measurements<a class="headerlink" href="#external-attitude-measurements" title="Permanent link">&para;</a></h2>
+<p>Because the onboard attitude estimator uses only inertial measurements, the estimates can deviate from truth. This is especially true during extended periods of accelerated flight, during which the gravity vector cannot be measured. Attitude measurements from an external source can be applied to the filter to help improve performance. These external attitude measurements might come from a higher-level estimator running on the companion computer that fuses additional information from GPS, vision, or a motion capture system.</p>
+<p>To send these updates to the flight controller, publish a <code>geometry_msgs/Quaternion</code> message to the <code>external_attitude</code> topic to which <code>rosflight_io</code> subscribes. The degree to which this update will be trusted is tuned with the <code>FILTER_KP_EXT</code> parameter.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Mahony, R., Hamel, T. and Pflimlin, J. (2008). Nonlinear Complementary Filters on the Special Orthogonal Group. IEEE Transactions on Automatic Control, 53(5), pp.1203-1218.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Casey, R., Karpenko, M., Curry, R. and Elkaim, G. (2013). Attitude Representation and Kinematic Propagation for Low-Cost UAVs. AIAA Guidance, Navigation, and Control (GNC) Conference.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../preflight-checks/" title="Pre-Flight Checks" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Pre-Flight Checks
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../gazebo_simulation/" title="Running Gazebo Simulation" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Running Gazebo Simulation
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2019, James Jackson and Daniel Koch, BYU MAGICC Lab
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>

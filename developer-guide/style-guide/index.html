@@ -1,0 +1,1118 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="A lean, open-source autopilot system built by researchers, for researchers">
+      
+      
+        <link rel="canonical" href="http://rosflight.org/developer-guide/style-guide/">
+      
+      
+        <meta name="author" content="James Jackson, Daniel Koch">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+    
+    
+      
+        <title>Style Guide - ROSflight</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#546e7a">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-96018590-2", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue-grey" data-md-color-accent="red">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#style-guide" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://rosflight.org" title="ROSflight" class="md-header-nav__button md-logo">
+          
+            <img src="../../assets/logo.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              ROSflight
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Style Guide
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../user-guide/overview/" class="md-tabs__link">
+          User Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../contribution-guidelines/" class="md-tabs__link md-tabs__link--active">
+          Developer Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../algorithms/estimator/" class="md-tabs__link">
+          Algorithms
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://rosflight.org" title="ROSflight" class="md-nav__button md-logo">
+      
+        <img src="../../assets/logo.png" width="48" height="48">
+      
+    </a>
+    ROSflight
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      User Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        User Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/hardware-setup/" title="Hardware Setup" class="md-nav__link">
+      Hardware Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/flight-controller-setup/" title="Flight Controller Setup" class="md-nav__link">
+      Flight Controller Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/rc-configuration/" title="RC Configuration" class="md-nav__link">
+      RC Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/ros-setup/" title="ROS Setup" class="md-nav__link">
+      ROS Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/parameter-configuration/" title="Parameter Configuration" class="md-nav__link">
+      Parameter Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/preflight-checks/" title="Pre-Flight Checks" class="md-nav__link">
+      Pre-Flight Checks
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/performance/" title="Improving Performance" class="md-nav__link">
+      Improving Performance
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/gazebo_simulation/" title="Running Gazebo Simulation" class="md-nav__link">
+      Running Gazebo Simulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/autonomous-flight/" title="Autonomous Flight" class="md-nav__link">
+      Autonomous Flight
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Developer Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Developer Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../contribution-guidelines/" title="Contribution Guidelines" class="md-nav__link">
+      Contribution Guidelines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Style Guide
+      </label>
+    
+    <a href="./" title="Style Guide" class="md-nav__link md-nav__link--active">
+      Style Guide
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#white-space-and-line-endings" class="md-nav__link">
+    White Space and Line Endings
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-style" class="md-nav__link">
+    Code Style
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#indentation" class="md-nav__link">
+    Indentation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#braces" class="md-nav__link">
+    Braces
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spaces" class="md-nav__link">
+    Spaces
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#naming-conventions" class="md-nav__link">
+    Naming Conventions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-arguments" class="md-nav__link">
+    Function Arguments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    Classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enums" class="md-nav__link">
+    Enums
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    Structs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#globals" class="md-nav__link">
+    Globals
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include-order" class="md-nav__link">
+    Include Order
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#namespacing" class="md-nav__link">
+    Namespacing
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../code-architecture/" title="Code Architecture" class="md-nav__link">
+      Code Architecture
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../building-flashing/" title="Building and Flashing" class="md-nav__link">
+      Building and Flashing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../unit-tests/" title="Unit Tests" class="md-nav__link">
+      Unit Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../debugging/" title="Using a Debugger" class="md-nav__link">
+      Using a Debugger
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../writing-documentation/" title="Writing Documentation" class="md-nav__link">
+      Writing Documentation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Algorithms
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Algorithms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../algorithms/estimator/" title="Estimator" class="md-nav__link">
+      Estimator
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#white-space-and-line-endings" class="md-nav__link">
+    White Space and Line Endings
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-style" class="md-nav__link">
+    Code Style
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#indentation" class="md-nav__link">
+    Indentation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#braces" class="md-nav__link">
+    Braces
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spaces" class="md-nav__link">
+    Spaces
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#naming-conventions" class="md-nav__link">
+    Naming Conventions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function-arguments" class="md-nav__link">
+    Function Arguments
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    Classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enums" class="md-nav__link">
+    Enums
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structs" class="md-nav__link">
+    Structs
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#globals" class="md-nav__link">
+    Globals
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#include-order" class="md-nav__link">
+    Include Order
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#namespacing" class="md-nav__link">
+    Namespacing
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/rosflight/firmware/blob/master/docs/developer-guide/style-guide.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="style-guide">Style Guide<a class="headerlink" href="#style-guide" title="Permanent link">&para;</a></h1>
+<p>Any contributions to the firmware should adhere to the following style guidelines.</p>
+<h2 id="white-space-and-line-endings">White Space and Line Endings<a class="headerlink" href="#white-space-and-line-endings" title="Permanent link">&para;</a></h2>
+<p>Please try not to commit anything that only changes white space or line endings. To check if that's going to happen, run <code>git diff --check</code> before you stage your files. Git will warn you about obnoxious changes. Please fix them.</p>
+<h2 id="code-style">Code Style<a class="headerlink" href="#code-style" title="Permanent link">&para;</a></h2>
+<p>The following ROSflight code style is based on the <a href="http://wiki.ros.org/CppStyleGuide">ROS C++ style guide</a>.
+ROSflight uses the C++11 standard.</p>
+<h3 id="indentation">Indentation<a class="headerlink" href="#indentation" title="Permanent link">&para;</a></h3>
+<p>Indentation should be <strong>2 spaces</strong> (no tabs). Case statements in switch blocks should not be indented, e.g.</p>
+<div class="codehilite"><pre><span></span><span class="k">switch</span> <span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+  <span class="c1">// do something</span>
+  <span class="k">break</span><span class="p">;</span>
+<span class="k">default</span><span class="o">:</span>
+  <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3 id="braces">Braces<a class="headerlink" href="#braces" title="Permanent link">&para;</a></h3>
+<p>Braces should be placed on the next line, e.g.</p>
+<div class="codehilite"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// do stuff</span>
+<span class="p">}</span>
+<span class="k">else</span>
+<span class="p">{</span>
+  <span class="c1">// do something else</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>For a conditional with only one statement, the braces can be omitted but the statement should be indented:</p>
+<div class="codehilite"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
+  <span class="n">x</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+</pre></div>
+
+<h3 id="spaces">Spaces<a class="headerlink" href="#spaces" title="Permanent link">&para;</a></h3>
+<p>There should be a space between <code>if</code>, <code>for</code>, or <code>while</code> and the condition, e.g. <code>while (true)</code>, not <code>while(true)</code>.</p>
+<h3 id="naming-conventions">Naming Conventions<a class="headerlink" href="#naming-conventions" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Class names should be capitalized with no spaces (i.e. <code>StateManager</code>).</li>
+<li>Member variables should contain a post-pended underscore (i.e. <code>data_</code>).</li>
+<li>Member functions should be all lower case with underscores (i.e. <code>set_error()</code>).</li>
+<li>Integer types should be defined using the <code>cstdint</code> convention (i.e. <code>uint8_t</code>, <code>int64_t</code>, <code>float</code>, ...).</li>
+<li>Boolean values should be assigned <code>true</code> or <code>false</code>, not <code>0</code> or <code>1</code>.</li>
+</ul>
+<h3 id="function-arguments">Function Arguments<a class="headerlink" href="#function-arguments" title="Permanent link">&para;</a></h3>
+<p>Primitive data types (<code>int</code>, <code>float</code>, etc.) should always be passed by value. Other types (e.g. classes) should be passed by reference and should maintain proper const-correctness. Arguments that are modified by the function should be passed by pointer instead of reference, to make the fact that the argument will be changed clearer in the calling code. For example:</p>
+<div class="codehilite"><pre><span></span><span class="kt">void</span> <span class="nf">do_something</span><span class="p">(</span><span class="kt">float</span> <span class="n">dt</span><span class="p">,</span> <span class="k">const</span> <span class="n">MyClass</span><span class="o">&amp;</span> <span class="n">data</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">output</span><span class="p">);</span>
+</pre></div>
+
+<p>This function would be called as</p>
+<div class="codehilite"><pre><span></span><span class="kt">float</span> <span class="n">dt</span> <span class="o">=</span> <span class="mf">0.01f</span><span class="p">;</span>
+<span class="n">MyClass</span> <span class="n">my_class</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+
+<span class="n">do_something</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">my_class</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+</pre></div>
+
+<p>This makes it clear the <code>value</code> is modified by the function call.</p>
+<h3 id="classes">Classes<a class="headerlink" href="#classes" title="Permanent link">&para;</a></h3>
+<p>All modules should be defined as a self-contained class. All member variables should be declared as "private," named with a post-pended underscore, and accessed through inline accessor functions. All accessible data should be encapsulated in a struct. For example, here is a snippet from the <code>Sensors</code> module in the firmware:</p>
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">Sensors</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="k">struct</span> <span class="n">Data</span>
+  <span class="p">{</span>
+    <span class="n">vector_t</span> <span class="n">accel</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+    <span class="n">vector_t</span> <span class="n">gyro</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+    <span class="kt">float</span> <span class="n">imu_temperature</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">uint64_t</span> <span class="n">imu_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">diff_pressure_velocity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">diff_pressure</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">diff_pressure_temp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">diff_pressure_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">baro_altitude</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">baro_pressure</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">baro_temperature</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">baro_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">sonar_range</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">sonar_range_valid</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="n">vector_t</span> <span class="n">mag</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">};</span>
+
+    <span class="kt">bool</span> <span class="n">baro_present</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">mag_present</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">sonar_present</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">diff_pressure_present</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="n">Sensors</span><span class="p">(</span><span class="n">ROSflight</span><span class="o">&amp;</span> <span class="n">rosflight</span><span class="p">);</span>
+
+  <span class="kr">inline</span> <span class="k">const</span> <span class="n">Data</span><span class="o">&amp;</span> <span class="n">data</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data_</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+  <span class="n">Data</span> <span class="n">data_</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Note that <code>data_</code> is a private member variable, but the <code>Data</code> struct is declared publicly and <code>data_</code> is accessed through an <code>inline const</code> accessor to prevent another module from changing <code>data_</code>.</p>
+<h3 id="enums">Enums<a class="headerlink" href="#enums" title="Permanent link">&para;</a></h3>
+<p>Enums should be declared using the following style:
+<div class="codehilite"><pre><span></span><span class="k">enum</span> <span class="n">ArmedState</span>
+<span class="p">{</span>
+  <span class="n">ARMED_STATE_INIT</span><span class="p">,</span>
+  <span class="n">ARMED_STATE_DISARMED</span><span class="p">,</span>
+  <span class="n">ARMED_STATE_ARMED</span>
+<span class="p">};</span>
+</pre></div></p>
+<p>The name of the enum should be in CamelCase, and the names of its members should be ALL_CAPS. Where practical, have the members of the enum begin with the name of the enum.</p>
+<h3 id="structs">Structs<a class="headerlink" href="#structs" title="Permanent link">&para;</a></h3>
+<p>Structs should be declared using the following style:
+<div class="codehilite"><pre><span></span><span class="k">struct</span> <span class="n">SomeValue</span>
+<span class="p">{</span>
+  <span class="kt">int</span> <span class="n">v1</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">v2</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+Struct type names should be in CamelCase.</p>
+<h3 id="globals">Globals<a class="headerlink" href="#globals" title="Permanent link">&para;</a></h3>
+<p>The use of global variables should be limited to when absolutely necessary (such as linking to interrupt routines or hardware peripherals). This should only occur in board support layers and not in the core ROSflight libary code.</p>
+<h3 id="include-order">Include Order<a class="headerlink" href="#include-order" title="Permanent link">&para;</a></h3>
+<p>Include files at the top of your file in the following order:</p>
+<ol>
+<li>Standard library (e.g. <code>&lt;cstdint&gt;</code>)</li>
+<li>Files from external libraries included in the project (e.g. <code>&lt;breezystm32/breezystm32.h&gt;</code>, <code>&lt;mavlink/v1.0/common/mavlink.h&gt;</code>)</li>
+<li>Other header files from this project (e.g. <code>"rosflight.h"</code>)</li>
+<li>The header file for this specific source file</li>
+</ol>
+<p>Group the includes according to the above list with an empty line between each group. (For external libraries, you may subdivide group 2 into a group for each library.) The first two groups should use angle brackets (<code>&lt;&gt;</code>), and the last two groups should use quotation marks (<code>""</code>). Files from external libraries should be namespaced by the library name (e.g. <code>&lt;breezystm32/breezystm32.h&gt;</code>, not <code>&lt;breezystm32.h&gt;</code>).</p>
+<p>Alphabetize the files within each group. Do not change the include order to fix build errors; if you have to do that it means you are not including a file somewhere that you should. Please fix it by including all the right files.</p>
+<p>Include C standard library headers using the C++ style (<code>#include &lt;cmath&gt;</code>) instead of the C style (<code>#include &lt;math.h&gt;</code>).</p>
+<p>For example, in <code>sensors.c</code> I might have:
+<div class="codehilite"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;cstdbool&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cstdint&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;breezystm32/breezystm32.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;breezystm32/drv_mpu6050.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;param.h&quot;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;sensors.h&quot;</span><span class="cp"></span>
+</pre></div></p>
+<h3 id="namespacing">Namespacing<a class="headerlink" href="#namespacing" title="Permanent link">&para;</a></h3>
+<p>All modules in the firmware should be encapsulated in the <code>rosflight_firmware</code> namespace. This prevents name-clashing in SIL compilation.</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../contribution-guidelines/" title="Contribution Guidelines" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Contribution Guidelines
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../code-architecture/" title="Code Architecture" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Code Architecture
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2019, James Jackson and Daniel Koch, BYU MAGICC Lab
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>

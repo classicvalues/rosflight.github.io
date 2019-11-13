@@ -1,0 +1,1066 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="A lean, open-source autopilot system built by researchers, for researchers">
+      
+      
+        <link rel="canonical" href="http://rosflight.org/developer-guide/code-architecture/">
+      
+      
+        <meta name="author" content="James Jackson, Daniel Koch">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+    
+    
+      
+        <title>Code Architecture - ROSflight</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#546e7a">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-96018590-2", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue-grey" data-md-color-accent="red">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#code-architecture" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://rosflight.org" title="ROSflight" class="md-header-nav__button md-logo">
+          
+            <img src="../../assets/logo.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              ROSflight
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Code Architecture
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../user-guide/overview/" class="md-tabs__link">
+          User Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../contribution-guidelines/" class="md-tabs__link md-tabs__link--active">
+          Developer Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../algorithms/estimator/" class="md-tabs__link">
+          Algorithms
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://rosflight.org" title="ROSflight" class="md-nav__button md-logo">
+      
+        <img src="../../assets/logo.png" width="48" height="48">
+      
+    </a>
+    ROSflight
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      User Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        User Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/hardware-setup/" title="Hardware Setup" class="md-nav__link">
+      Hardware Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/flight-controller-setup/" title="Flight Controller Setup" class="md-nav__link">
+      Flight Controller Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/rc-configuration/" title="RC Configuration" class="md-nav__link">
+      RC Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/ros-setup/" title="ROS Setup" class="md-nav__link">
+      ROS Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/parameter-configuration/" title="Parameter Configuration" class="md-nav__link">
+      Parameter Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/preflight-checks/" title="Pre-Flight Checks" class="md-nav__link">
+      Pre-Flight Checks
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/performance/" title="Improving Performance" class="md-nav__link">
+      Improving Performance
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/gazebo_simulation/" title="Running Gazebo Simulation" class="md-nav__link">
+      Running Gazebo Simulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/autonomous-flight/" title="Autonomous Flight" class="md-nav__link">
+      Autonomous Flight
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Developer Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Developer Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../contribution-guidelines/" title="Contribution Guidelines" class="md-nav__link">
+      Contribution Guidelines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../style-guide/" title="Style Guide" class="md-nav__link">
+      Style Guide
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Code Architecture
+      </label>
+    
+    <a href="./" title="Code Architecture" class="md-nav__link md-nav__link--active">
+      Code Architecture
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rosflight-core-library" class="md-nav__link">
+    ROSflight Core Library
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#board-abstraction" class="md-nav__link">
+    Board Abstraction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comm-link-abstraction" class="md-nav__link">
+    Comm Link Abstraction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flight-stack" class="md-nav__link">
+    Flight Stack
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#state-manager" class="md-nav__link">
+    State Manager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-server" class="md-nav__link">
+    Parameter Server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comm-manager" class="md-nav__link">
+    Comm Manager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sensors" class="md-nav__link">
+    Sensors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estimator" class="md-nav__link">
+    Estimator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rc" class="md-nav__link">
+    RC
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-manager" class="md-nav__link">
+    Command Manager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controller" class="md-nav__link">
+    Controller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mixer" class="md-nav__link">
+    Mixer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../building-flashing/" title="Building and Flashing" class="md-nav__link">
+      Building and Flashing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../unit-tests/" title="Unit Tests" class="md-nav__link">
+      Unit Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../debugging/" title="Using a Debugger" class="md-nav__link">
+      Using a Debugger
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../writing-documentation/" title="Writing Documentation" class="md-nav__link">
+      Writing Documentation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Algorithms
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Algorithms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../algorithms/estimator/" title="Estimator" class="md-nav__link">
+      Estimator
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rosflight-core-library" class="md-nav__link">
+    ROSflight Core Library
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#board-abstraction" class="md-nav__link">
+    Board Abstraction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comm-link-abstraction" class="md-nav__link">
+    Comm Link Abstraction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flight-stack" class="md-nav__link">
+    Flight Stack
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#state-manager" class="md-nav__link">
+    State Manager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameter-server" class="md-nav__link">
+    Parameter Server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comm-manager" class="md-nav__link">
+    Comm Manager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sensors" class="md-nav__link">
+    Sensors
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estimator" class="md-nav__link">
+    Estimator
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rc" class="md-nav__link">
+    RC
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-manager" class="md-nav__link">
+    Command Manager
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#controller" class="md-nav__link">
+    Controller
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mixer" class="md-nav__link">
+    Mixer
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/rosflight/firmware/blob/master/docs/developer-guide/code-architecture.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="code-architecture">Code Architecture<a class="headerlink" href="#code-architecture" title="Permanent link">&para;</a></h1>
+<p>The firmware is divided into two main components: the <em>ROSflight library</em>, and a collection of <em>board implementations</em>.
+This division is intended to allow the same core flight code to run on any processor or platform, either an embedded flight controller (such as the Naze32 or Revo) or a desktop environment for a software-in-the-loop (SIL) simulation. The interface between these two components is called the <em>hardware abstraction layer</em> (HAL).
+This architecture is illustrated in the following diagram:</p>
+<p><img alt="hardware abstraction layer" src="../images/HAL.svg" /></p>
+<h2 id="rosflight-core-library">ROSflight Core Library<a class="headerlink" href="#rosflight-core-library" title="Permanent link">&para;</a></h2>
+<p>The ROSflight library consists of all the code in the <code>include</code> and <code>src</code> directories of the firmware repository.
+This includes the code for what is termed the "flight stack," which consists of the core components (such as the estimator, controller, state manager, etc.) required for flight.
+It also includes the interface definition for the hardware abstraction layer, which is defined by the abstract <code>Board</code> class in <code>include/board.h</code>.
+The communications link (MAVLink) is also abstracted, with the interface defined by the <code>CommLink</code> class in <code>include/comm_link.h</code>.
+External libraries are contained in the <code>lib</code> folder.</p>
+<h2 id="board-abstraction">Board Abstraction<a class="headerlink" href="#board-abstraction" title="Permanent link">&para;</a></h2>
+<p>The hardware abstraction implementations are contained in the <code>board</code> directory, organized in subdirectories according to the hardware driver layer.
+The <code>boards/airbourne</code> directory uses drivers for boards using the STM32F4 processor, while the <code>boards/breezy</code> directory uses drivers for STM32F1 processors.
+Each board implementation is required to provide an implementation of the hardware abstraction layer interface, which is passed by reference to the flight stack.
+The Revo implementation in the <code>boards/airbourne</code> shows how this is done for an embedded flight controller.
+Examples of board implementations for SIL simulation are found in the <code>rosflight_firmware</code> and <code>rosflight_sim</code> ROS packages available <a href="https://github.com/rosflight/rosflight">here</a>.</p>
+<p>The flight stack is encapsulated in the <code>ROSflight</code> class defined at <code>include/rosflight.h</code>.
+This class contains two public functions: <code>init()</code> and <code>run()</code>.
+Its constructor requires two arguments: an implementation of the <code>Board</code> interface, and an implementation of the <code>CommLink</code> interface.</p>
+<p>Each board implementation is required to:</p>
+<ul>
+<li>Provide its own <code>main()</code> function that instantiates an implementation of the <code>Board</code> interface,</li>
+<li>Instantiate a <code>ROSflight</code> object with that board interface as an argument,</li>
+<li>Call the <code>init()</code> method of that <code>ROSflight</code> object once,</li>
+<li>Then call the <code>run()</code> method in a loop.</li>
+</ul>
+<p>For example, here is the main function for the Naze32 board implementation (<code>boards/breezy/main.cpp</code>):</p>
+<div class="codehilite"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;breezy_board.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;rosflight.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;mavlink.h&quot;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">rosflight_firmware</span><span class="o">::</span><span class="n">BreezyBoard</span> <span class="n">board</span><span class="p">;</span>
+  <span class="n">board</span><span class="p">.</span><span class="n">init_board</span><span class="p">();</span>
+  <span class="n">rosflight_firmware</span><span class="o">::</span><span class="n">Mavlink</span> <span class="n">mavlink</span><span class="p">(</span><span class="n">board</span><span class="p">);</span>
+  <span class="n">rosflight_firmware</span><span class="o">::</span><span class="n">ROSflight</span> <span class="n">firmware</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="n">mavlink</span><span class="p">);</span>
+
+  <span class="n">firmware</span><span class="p">.</span><span class="n">init</span><span class="p">();</span>
+
+  <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">firmware</span><span class="p">.</span><span class="n">run</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2 id="comm-link-abstraction">Comm Link Abstraction<a class="headerlink" href="#comm-link-abstraction" title="Permanent link">&para;</a></h2>
+<p>The purpose of the comm link abstraction layer is to allow communication protocols other than MAVLink to be used if desired.
+The comm link abstraction implementations are contained in the <code>comms</code> directory, organized in subdirectories by protocol.
+The implementations translate between the messages that the firmware expects to send and receive, and the messages defined by the communication protocol.
+Currently, only MAVLink is implemented.</p>
+<h2 id="flight-stack">Flight Stack<a class="headerlink" href="#flight-stack" title="Permanent link">&para;</a></h2>
+<p>The flight stack is encapsulated by the <code>ROSflight</code> class defined in <code>include/rosflight.h</code>.
+It consists of a collection of <em>modules</em>.
+Each of these modules is implemented as a C++ class, and encapsulates a cohesive piece of the autopilot functionality.
+The following diagram illustrates these modules and the data flow between them.
+Rectangular blocks represent modules in the flight stack, and ellipses represent hardware functionality implemented in the board support layer:</p>
+<p><img alt="flight stack" src="../images/flight_stack.svg" /></p>
+<p>We'll describe each of these modules in the following sections:</p>
+<h3 id="state-manager">State Manager<a class="headerlink" href="#state-manager" title="Permanent link">&para;</a></h3>
+<p>This module is in charge of keeping track of the internal state (armed status, error codes, failsafe, etc.) of the vehicle.
+While only the comm manager data flow is illustrated on the diagram, all other modules query the state manager to determine the status and act appropriately based on that status.</p>
+<p>The operation of the state manager is defined by the following finite state machine:</p>
+<p><img alt="state manager FSM" src="../images/arming-fsm.svg" /></p>
+<h3 id="parameter-server">Parameter Server<a class="headerlink" href="#parameter-server" title="Permanent link">&para;</a></h3>
+<p>This module handles all parameters for the flight stack.
+It supports the getting and setting of integer and floating-point parameters, and the saving of these parameters to non-volatile memory.
+Setting and getting of parameters from the companion computer is done through the serial communication interface.
+While no other data flow lines are shown on the diagram, all of the other modules interact with the parameter server.</p>
+<h3 id="comm-manager">Comm Manager<a class="headerlink" href="#comm-manager" title="Permanent link">&para;</a></h3>
+<p>This module handles all serial communication between the flight controller and companion computer.
+This includes streaming data and receiving offboard control setpoints and other commands from the computer.
+This module primarily collects data from the sensors, estimator, state manager, and parameters modules, and sends offboard control setpoints to the command manager and parameter requests to the parameter server.</p>
+<p>The actual communication protocol used is abstracted by the interface in <a href="https://github.com/rosflight/firmware/blob/master/include/comm_link.h">include/comm_link.h</a>.
+A new protocol can be used by implementing a wrapper around the protocol that inherits from this interface.
+Currently, only MAVLink has been implmented.
+The implementation is found in <a href="https://github.com/rosflight/firmware/blob/master/comms/mavlink/mavlink.h">comms/mavlink/mavlink.h</a> and <a href="https://github.com/rosflight/firmware/blob/master/comms/mavlink/mavlink.cpp">comms/mavlink/mavlink.cpp</a>.</p>
+<h3 id="sensors">Sensors<a class="headerlink" href="#sensors" title="Permanent link">&para;</a></h3>
+<p>This module is in charge of managing the various sensors (IMU, magnetometer, barometer, differential pressure sensor, sonar altimeter, etc.).
+Its responsibilities include updating sensor data at appropriate rates, and computing and applying calibration parameters.</p>
+<h3 id="estimator">Estimator<a class="headerlink" href="#estimator" title="Permanent link">&para;</a></h3>
+<p>This module is responsible for estimating the attitude and attitude rates of the vehicle from the sensor data.</p>
+<h3 id="rc">RC<a class="headerlink" href="#rc" title="Permanent link">&para;</a></h3>
+<p>The RC module is responsible for interpreting the RC signals coming from the transmitter via the receiver.
+This includes mapping channels to their appropriate functions and reversing directions if necessary.</p>
+<h3 id="command-manager">Command Manager<a class="headerlink" href="#command-manager" title="Permanent link">&para;</a></h3>
+<p>The command manager combines inputs from the RC and comm manager modules to produce a control setpoint.
+Its main purpose is to handle the interaction between offboard commands and the RC safety pilot, as well as to enforce the failsafe command if the state manager reports failsafe mode.</p>
+<h3 id="controller">Controller<a class="headerlink" href="#controller" title="Permanent link">&para;</a></h3>
+<p>The controller uses the inputs from the command manager and estimator to compute a control output.
+This control output is computed in a generic form (<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>, <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>, and <span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span> torques, and force <span><span class="MathJax_Preview">F</span><script type="math/tex">F</script></span>), and is later converted into actual motor commands by the mixer.</p>
+<h3 id="mixer">Mixer<a class="headerlink" href="#mixer" title="Permanent link">&para;</a></h3>
+<p>The mixer takes the generic outputs computed by the controller and maps them to actual motor commands depending on the configuration of the vehicle.</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../style-guide/" title="Style Guide" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Style Guide
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../building-flashing/" title="Building and Flashing" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Building and Flashing
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2019, James Jackson and Daniel Koch, BYU MAGICC Lab
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>

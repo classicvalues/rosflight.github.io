@@ -1,0 +1,1542 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="A lean, open-source autopilot system built by researchers, for researchers">
+      
+      
+        <link rel="canonical" href="http://rosflight.org/algorithms/estimator/">
+      
+      
+        <meta name="author" content="James Jackson, Daniel Koch">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+    
+    
+      
+        <title>Estimator - ROSflight</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      
+        <link rel="stylesheet" href="../../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#546e7a">
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-96018590-2", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue-grey" data-md-color-accent="red">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#estimator" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="http://rosflight.org" title="ROSflight" class="md-header-nav__button md-logo">
+          
+            <img src="../../assets/logo.png" width="24" height="24">
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              ROSflight
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Estimator
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../user-guide/overview/" class="md-tabs__link">
+          User Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../../developer-guide/contribution-guidelines/" class="md-tabs__link">
+          Developer Guide
+        </a>
+      
+    </li>
+  
+
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="./" class="md-tabs__link md-tabs__link--active">
+          Algorithms
+        </a>
+      
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="http://rosflight.org" title="ROSflight" class="md-nav__button md-logo">
+      
+        <img src="../../assets/logo.png" width="48" height="48">
+      
+    </a>
+    ROSflight
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/rosflight/firmware/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    rosflight/firmware
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      User Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        User Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/overview/" title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/hardware-setup/" title="Hardware Setup" class="md-nav__link">
+      Hardware Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/flight-controller-setup/" title="Flight Controller Setup" class="md-nav__link">
+      Flight Controller Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/rc-configuration/" title="RC Configuration" class="md-nav__link">
+      RC Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/ros-setup/" title="ROS Setup" class="md-nav__link">
+      ROS Setup
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/parameter-configuration/" title="Parameter Configuration" class="md-nav__link">
+      Parameter Configuration
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/preflight-checks/" title="Pre-Flight Checks" class="md-nav__link">
+      Pre-Flight Checks
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/performance/" title="Improving Performance" class="md-nav__link">
+      Improving Performance
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/gazebo_simulation/" title="Running Gazebo Simulation" class="md-nav__link">
+      Running Gazebo Simulation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../user-guide/autonomous-flight/" title="Autonomous Flight" class="md-nav__link">
+      Autonomous Flight
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Developer Guide
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        Developer Guide
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/contribution-guidelines/" title="Contribution Guidelines" class="md-nav__link">
+      Contribution Guidelines
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/style-guide/" title="Style Guide" class="md-nav__link">
+      Style Guide
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/code-architecture/" title="Code Architecture" class="md-nav__link">
+      Code Architecture
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/building-flashing/" title="Building and Flashing" class="md-nav__link">
+      Building and Flashing
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/unit-tests/" title="Unit Tests" class="md-nav__link">
+      Unit Tests
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/debugging/" title="Using a Debugger" class="md-nav__link">
+      Using a Debugger
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../developer-guide/writing-documentation/" title="Writing Documentation" class="md-nav__link">
+      Writing Documentation
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      Algorithms
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Algorithms
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Estimator
+      </label>
+    
+    <a href="./" title="Estimator" class="md-nav__link md-nav__link--active">
+      Estimator
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complementary-filtering" class="md-nav__link">
+    Complementary Filtering
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attitude-representation" class="md-nav__link">
+    Attitude Representation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#euler-angles" class="md-nav__link">
+    Euler Angles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rotation-matrix" class="md-nav__link">
+    Rotation Matrix
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quaternions" class="md-nav__link">
+    Quaternions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#derivation" class="md-nav__link">
+    Derivation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#passive-complementary-filter" class="md-nav__link">
+    Passive Complementary Filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifications-to-original-passive-filter" class="md-nav__link">
+    Modifications to Original Passive Filter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-attitude-measurements" class="md-nav__link">
+    External Attitude Measurements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tuning" class="md-nav__link">
+    Tuning
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    Implementation
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complementary-filtering" class="md-nav__link">
+    Complementary Filtering
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attitude-representation" class="md-nav__link">
+    Attitude Representation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#euler-angles" class="md-nav__link">
+    Euler Angles
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rotation-matrix" class="md-nav__link">
+    Rotation Matrix
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quaternions" class="md-nav__link">
+    Quaternions
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#derivation" class="md-nav__link">
+    Derivation
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#passive-complementary-filter" class="md-nav__link">
+    Passive Complementary Filter
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifications-to-original-passive-filter" class="md-nav__link">
+    Modifications to Original Passive Filter
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-attitude-measurements" class="md-nav__link">
+    External Attitude Measurements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tuning" class="md-nav__link">
+    Tuning
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    Implementation
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/rosflight/firmware/blob/master/docs/algorithms/estimator.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="estimator">Estimator<a class="headerlink" href="#estimator" title="Permanent link">&para;</a></h1>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>The estimator is used to calculate an estimate of the attitude and angular velocity of the multirotor.  It is assumed that the flight controller is mounted rigidly to the body of the aircraft (perhaps with dampening material to remove vibrations from the motors), such that measurements of the on-board IMU are consistent with the motion of the aircraft.</p>
+<p>Due to the limited computational power on the embedded processor, and to calculate attitude estimates at speeds up to 8000Hz, a simple complementary filter is used, rather than an extended Kalman filter.  In practice, this method works extremely well, and it used widely throughout commercially available autopilots.  There are a variety of complementary filters, but the general theory is the same.  A complementary filter is a method that combines low and high frequency data (complementary in frequency bandwidth).  It can be used to fuse the measurements from a gyroscope, accelerometer and sometimes magnetometer to produce an estimate of the attitude of the MAV.</p>
+<h2 id="complementary-filtering">Complementary Filtering<a class="headerlink" href="#complementary-filtering" title="Permanent link">&para;</a></h2>
+<p>The idea behind complementary filtering is to try to get the "best of both worlds" of gyros and accelerometers.  Gyros are very accurate in short spaces of time, but they are subject to low-frequency drift.  Accelerometers don't drift in the long scheme of things, but they experience high-frequency noise as the MAV moves about.  So, to solve these problems, the complementary filter primarily propagates states using gyroscope measurements, but then corrects drift with the accelerometer, which is a partial source of attitude measurements.  In a general sense, it is like taking a high-pass filtered version of gyroscope measurements, and a low-pass filtered version of accelerometers, and fusing the two together in a manner that results in an estimate that is stable over time, but also able to handle quick transient motions.</p>
+<p>For an excellent review of the theory of complementary filtering, consult Mahony's Nonlinear Complementary Filtering on SO(3) paper<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>.</p>
+<h2 id="attitude-representation">Attitude Representation<a class="headerlink" href="#attitude-representation" title="Permanent link">&para;</a></h2>
+<p>There are a number of ways to represent the attitude of a MAV.  Often, attitude is represented in terms of the Euler angles yaw, pitch and roll, but it can also be represented in other ways, such as rotation matrices, and quaternions.</p>
+<h3 id="euler-angles">Euler Angles<a class="headerlink" href="#euler-angles" title="Permanent link">&para;</a></h3>
+<p>Euler angles represent rotations about three different axes, usually, the z, y, and x axes in that order.  This method is often the most easy for users to understand and interpret, but it is by far the least computationally efficient.  To propagate euler angles, the following kinematics are employed:</p>
+<div>
+<div class="MathJax_Preview"> \begin{equation}
+    \begin{bmatrix}
+        \dot{\phi} \\
+        \dot{\theta} \\
+        \dot{\psi} \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        1 &amp; \sin(\phi) \tan(\theta) &amp; \cos(\phi)\tan(\theta) \\
+        0 &amp; \cos(\phi)              &amp; -\sin(\phi) \\
+        0 &amp; \frac{\sin(\phi)}{\cos(\theta)} &amp; \frac{\cos(\phi)}{\cos(\theta)}  \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        p \\
+        q \\
+        r \\
+    \end{bmatrix}
+\end{equation} </div>
+<script type="math/tex; mode=display"> \begin{equation}
+    \begin{bmatrix}
+        \dot{\phi} \\
+        \dot{\theta} \\
+        \dot{\psi} \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        1 & \sin(\phi) \tan(\theta) & \cos(\phi)\tan(\theta) \\
+        0 & \cos(\phi)              & -\sin(\phi) \\
+        0 & \frac{\sin(\phi)}{\cos(\theta)} & \frac{\cos(\phi)}{\cos(\theta)}  \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        p \\
+        q \\
+        r \\
+    \end{bmatrix}
+\end{equation} </script>
+</div>
+<p>Note the large number of trigonometric functions associated with this propagation.  In a complementary filter, this will be evaluated at every measurement, and the non-linear coupling between <span><span class="MathJax_Preview">\omega</span><script type="math/tex">\omega</script></span>  and the attitude becomes very expensive, particularly on embedded processors.</p>
+<p>Another shortcoming of euler angles is known as "gimbal lock".  Gimbal lock occurs at the "singularity" of the euler angle representation, or pitched directly up or down.  The problem occurs because there is more than one way to represent this particular rotation.  There are some steps one can take to handle these issues, but it is a fundamental problem associated with using euler angles, and motivates the other attitude representations.</p>
+<h3 id="rotation-matrix">Rotation Matrix<a class="headerlink" href="#rotation-matrix" title="Permanent link">&para;</a></h3>
+<p>Rotation matrices, are often used in attitude estimation, because they do not suffer from gimbal lock, are quickly converted to and from euler angles, and because of their simple kinematics.</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+    \dot{R} = \lfloor\omega\rfloor R
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \dot{R} = \lfloor\omega\rfloor R
+\end{equation}
+</script>
+</div>
+<p>where <span><span class="MathJax_Preview">\lfloor\omega\rfloor</span><script type="math/tex">\lfloor\omega\rfloor</script></span> is the skew-symmetric matrix of <span><span class="MathJax_Preview">\omega</span><script type="math/tex">\omega</script></span>, and is related to calculating the cross product.</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+    \lfloor\omega\rfloor =
+    \begin{bmatrix}
+        0 &amp; -r &amp; q \\
+        r &amp; 0 &amp; -p \\
+        -q &amp; p &amp; 0
+    \end{bmatrix}
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \lfloor\omega\rfloor =
+    \begin{bmatrix}
+        0 & -r & q \\
+        r & 0 & -p \\
+        -q & p & 0
+    \end{bmatrix}
+\end{equation}
+</script>
+</div>
+<p>This propagation step is linear with respect to the angular rates, which simplifies calculation significantly.</p>
+<p>A rotation matrix from the inertial frame to body frame can be constructed from euler angles via the following formula:</p>
+<div>
+<div class="MathJax_Preview">
+\newcommand{\ct}{c\theta}
+\newcommand{\cp}{c\phi}
+\newcommand{\cs}{c\psi}
+\newcommand{\st}{s\theta}
+\newcommand{\sphi}{s\phi}
+\newcommand{\spsi}{s\psi}
+\begin{equation}
+        R = \begin{bmatrix}
+            \ct\cs &amp; \ct\spsi &amp; -\st \\
+        \sphi\st\cs-\cp\spsi &amp; \sphi\st\spsi+\cp\cs &amp; \sphi\ct \\
+        \cp\st\cs+\sphi\spsi &amp; \cp\st\spsi-\sphi\cs &amp; \sphi\st \\
+        \end{bmatrix}
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\newcommand{\ct}{c\theta}
+\newcommand{\cp}{c\phi}
+\newcommand{\cs}{c\psi}
+\newcommand{\st}{s\theta}
+\newcommand{\sphi}{s\phi}
+\newcommand{\spsi}{s\psi}
+\begin{equation}
+        R = \begin{bmatrix}
+            \ct\cs & \ct\spsi & -\st \\
+        \sphi\st\cs-\cp\spsi & \sphi\st\spsi+\cp\cs & \sphi\ct \\
+        \cp\st\cs+\sphi\spsi & \cp\st\spsi-\sphi\cs & \sphi\st \\
+        \end{bmatrix}
+\end{equation}
+</script>
+</div>
+<p>and converting back to euler angles is done via the following;</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+  \begin{bmatrix}
+    \phi \\
+    \theta \\
+    \psi \\
+  \end{bmatrix} =
+    \begin{bmatrix}
+     \textrm{atan2}\left(R_{32}, R_{33}\right) \\
+   \textrm{atan2}\left(-R_{31}, \sqrt{R_{21}^2 + R_{33}^2}\right) \\
+   \textrm{atan2}\left(R_{21}, R_{11}\right) \\
+  \end{bmatrix}
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+  \begin{bmatrix}
+    \phi \\
+    \theta \\
+    \psi \\
+  \end{bmatrix} =
+    \begin{bmatrix}
+     \textrm{atan2}\left(R_{32}, R_{33}\right) \\
+   \textrm{atan2}\left(-R_{31}, \sqrt{R_{21}^2 + R_{33}^2}\right) \\
+   \textrm{atan2}\left(R_{21}, R_{11}\right) \\
+  \end{bmatrix}
+\end{equation}
+</script>
+</div>
+<h3 id="quaternions">Quaternions<a class="headerlink" href="#quaternions" title="Permanent link">&para;</a></h3>
+<p>Quaternions are a number system which extends complex numbers.  They have four elements, commonly known as <span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span>, <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>, <span><span class="MathJax_Preview">y</span><script type="math/tex">y</script></span>, and <span><span class="MathJax_Preview">z</span><script type="math/tex">z</script></span>.  The last three elements can be though of as describing an axis, <span><span class="MathJax_Preview">\beta</span><script type="math/tex">\beta</script></span> about which a rotation occurred, while the first element, <span><span class="MathJax_Preview">w</span><script type="math/tex">w</script></span> can be though of as describing the amount of rotation <span><span class="MathJax_Preview">\alpha</span><script type="math/tex">\alpha</script></span> about that axis. (see eq~\ref{eq:euler_to_axis_angle}). While this may seem straight-forward, quaternions are normalized so that they can form a group.  (That is, a quaternion multiplied by a quaternion is a quaternion), so they end up being really difficult for a human being to interpret just by looking at the values.  However, they provide some amazing computational efficiencies, most of which comes from the following special mathematics associated with quaternions.</p>
+<p>First, just the definition of a quaternion:</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+    q = \begin{bmatrix}
+                q_w \\
+                q_x \\
+                q_y \\
+                q_z
+             \end{bmatrix}
+           = \begin{bmatrix}
+                \cos(\alpha/2) \\
+                \sin(\alpha/2)\cos(\beta_x) \\
+                \sin(\alpha/2)\cos(\beta_y) \\
+                \sin(\alpha/2)\cos(\beta_y)
+             \end{bmatrix}
+             = \begin{bmatrix}
+               s \\
+               v_x \\
+               v_y \\
+               v_z
+             \end{bmatrix}
+    \label{eq:euler_to_axis_angle}
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+    q = \begin{bmatrix}
+                q_w \\
+                q_x \\
+                q_y \\
+                q_z
+             \end{bmatrix}
+           = \begin{bmatrix}
+                \cos(\alpha/2) \\
+                \sin(\alpha/2)\cos(\beta_x) \\
+                \sin(\alpha/2)\cos(\beta_y) \\
+                \sin(\alpha/2)\cos(\beta_y)
+             \end{bmatrix}
+             = \begin{bmatrix}
+               s \\
+               v_x \\
+               v_y \\
+               v_z
+             \end{bmatrix}
+    \label{eq:euler_to_axis_angle}
+\end{equation}
+</script>
+</div>
+<p>and second, some formulas to convert to and from euler angles.</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+    q =
+      \begin{bmatrix}
+        \cos(\theta/2)\cos(\theta/2)\cos(\psi/2) + \sin(\phi/2)\sin(\theta/2)\sin(\psi/2) \\
+        \sin(\theta/2)\cos(\theta/2)\cos(\psi/2) - \cos(\phi/2)\sin(\theta/2)\sin(\psi/2) \\
+        \cos(\theta/2)\sin(\theta/2)\cos(\psi/2) + \sin(\phi/2)\cos(\theta/2)\sin(\psi/2) \\
+        \cos(\theta/2)\cos(\theta/2)\sin(\psi/2) - \sin(\phi/2)\sin(\theta/2)\cos(\psi/2) \\
+      \end{bmatrix}
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+    q =
+      \begin{bmatrix}
+        \cos(\theta/2)\cos(\theta/2)\cos(\psi/2) + \sin(\phi/2)\sin(\theta/2)\sin(\psi/2) \\
+        \sin(\theta/2)\cos(\theta/2)\cos(\psi/2) - \cos(\phi/2)\sin(\theta/2)\sin(\psi/2) \\
+        \cos(\theta/2)\sin(\theta/2)\cos(\psi/2) + \sin(\phi/2)\cos(\theta/2)\sin(\psi/2) \\
+        \cos(\theta/2)\cos(\theta/2)\sin(\psi/2) - \sin(\phi/2)\sin(\theta/2)\cos(\psi/2) \\
+      \end{bmatrix}
+\end{equation}
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+    \begin{bmatrix}
+        \phi \\
+        \theta \\
+        \psi \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \textrm{atan2}\left( 2\left(q_wq_x + q_yq_z\right),1-2\left(q_x^2+q_y^2\right) \right) \\
+        \textrm{sin}^{-1}\left( 2 \left( q_wq_y - q_zq_x \right)  \right) \\
+        \textrm{atan2}\left( 2 \left( q_wq_z + q_xq_y \right), 1 - 2 \left( q_y^2 q_z^2 \right)  \right)
+    \end{bmatrix}
+    \label{eq:euler_from_quat}
+    \tag{5}
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \begin{bmatrix}
+        \phi \\
+        \theta \\
+        \psi \\
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \textrm{atan2}\left( 2\left(q_wq_x + q_yq_z\right),1-2\left(q_x^2+q_y^2\right) \right) \\
+        \textrm{sin}^{-1}\left( 2 \left( q_wq_y - q_zq_x \right)  \right) \\
+        \textrm{atan2}\left( 2 \left( q_wq_z + q_xq_y \right), 1 - 2 \left( q_y^2 q_z^2 \right)  \right)
+    \end{bmatrix}
+    \label{eq:euler_from_quat}
+    \tag{5}
+\end{equation}
+</script>
+</div>
+<p>The quaternion group is "closed" under the following operation, termed quaternion multiplication.</p>
+<div>
+<div class="MathJax_Preview">
+q_1 \otimes q_2 = \begin{bmatrix} s_1s_2 - v_1^\top v_2 \\ s_1v_2 + s_2v_1 + v_1 \times v_2 \end{bmatrix}
+</div>
+<script type="math/tex; mode=display">
+q_1 \otimes q_2 = \begin{bmatrix} s_1s_2 - v_1^\top v_2 \\ s_1v_2 + s_2v_1 + v_1 \times v_2 \end{bmatrix}
+</script>
+</div>
+<p>To take the "inverse" of a quaternion is simply to multiply <span><span class="MathJax_Preview">s</span><script type="math/tex">s</script></span> or <span><span class="MathJax_Preview">v</span><script type="math/tex">v</script></span> by <span><span class="MathJax_Preview">-1</span><script type="math/tex">-1</script></span></p>
+<div>
+<div class="MathJax_Preview">\begin{equation}
+    q^{-1} = \begin{bmatrix}
+                -q_w \\
+                q_x \\
+                q_y \\
+                q_z
+             \end{bmatrix}
+                = \begin{bmatrix}
+                q_w \\
+                -q_x \\
+                -q_y \\
+                -q_z
+             \end{bmatrix}
+\end{equation}</div>
+<script type="math/tex; mode=display">\begin{equation}
+    q^{-1} = \begin{bmatrix}
+                -q_w \\
+                q_x \\
+                q_y \\
+                q_z
+             \end{bmatrix}
+                = \begin{bmatrix}
+                q_w \\
+                -q_x \\
+                -q_y \\
+                -q_z
+             \end{bmatrix}
+\end{equation}</script>
+</div>
+<p>and to find the difference between two quaternions, just quaternion multiply the inverse of one quaternion with the other.</p>
+<div>
+<div class="MathJax_Preview">\begin{equation}
+    \tilde{q} = \hat{q}^{-1} \otimes q
+\end{equation}</div>
+<script type="math/tex; mode=display">\begin{equation}
+    \tilde{q} = \hat{q}^{-1} \otimes q
+\end{equation}</script>
+</div>
+<p>However, the most important aspect of quaternions is the way we propagate dynamics.</p>
+<div>
+<div class="MathJax_Preview">\begin{equation}
+    \dot{q} = \frac{1}{2} q \otimes q_\omega
+\end{equation}</div>
+<script type="math/tex; mode=display">\begin{equation}
+    \dot{q} = \frac{1}{2} q \otimes q_\omega
+\end{equation}</script>
+</div>
+<p>where <span><span class="MathJax_Preview">q_\omega</span><script type="math/tex">q_\omega</script></span> is the pure quaternion created from angular rates.</p>
+<div>
+<div class="MathJax_Preview">\begin{equation}
+    q_\omega = \textrm{p}(\omega) =
+              \begin{bmatrix}
+                0 \\
+                p \\
+                q \\
+                r
+             \end{bmatrix}
+\end{equation}</div>
+<script type="math/tex; mode=display">\begin{equation}
+    q_\omega = \textrm{p}(\omega) =
+              \begin{bmatrix}
+                0 \\
+                p \\
+                q \\
+                r
+             \end{bmatrix}
+\end{equation}</script>
+</div>
+<p>What this means is that, like rotation matrices, quaternion dynamics are <em>linear</em> with respect to angular rates, as opposed to euler angles, which are non-linear, and they take less computation than rotation matrices because they have fewer terms.  Casey et al. [Casey2013] performed a study comparing all three of the above representations, and found that complementary filters using an euler angle representation took <strong>12 times</strong> longer to compute on average than a quaternion-based filter.  Quaternions were also about 20% more efficient when compared with rotation matrices.  For these reasons, ROSflight uses quaternions in its filter.</p>
+<h2 id="derivation">Derivation<a class="headerlink" href="#derivation" title="Permanent link">&para;</a></h2>
+<p>ROSflight implements the quaternion-based passive "Mahony" filter as described in <a href="https://hal.archives-ouvertes.fr/hal-00488376/document">this paper</a> <sup id="fnref2:1"><a class="footnote-ref" href="#fn:1">1</a></sup>.  In particular, we implement equation 47 from that paper, which also estimates gyroscope biases.  A Lyuapanov stability analysis is performed in that paper, in which it is shown that all states and biases, except heading, are globally asymptotically stable given an accelerometer measurement and gyroscope.  The above reference also describes how a magnetometer can be integrated in a similar method to the accelerometer.  That portion of the filter is omitted here due to the unreliable nature of magnetometers on-board modern small UAS.</p>
+<h3 id="passive-complementary-filter">Passive Complementary Filter<a class="headerlink" href="#passive-complementary-filter" title="Permanent link">&para;</a></h3>
+<p>The original filter propagates per the following dynamics:</p>
+<div>
+<div class="MathJax_Preview">
+\newcommand{\werr}{\omega_\text{err}}
+\newcommand{\wfinal}{\omega_\text{final}}
+\begin{equation}
+    \begin{aligned}
+    \dot{\hat{q}} &amp;= \frac{1}{2} \hat{q} \otimes \textrm{p}\left(\wfinal\right) \\
+    \dot{\hat{b}} &amp;= -2k_I\werr
+    \end{aligned}
+    \label{eq:traditional_prop}
+    \tag{1}
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\newcommand{\werr}{\omega_\text{err}}
+\newcommand{\wfinal}{\omega_\text{final}}
+\begin{equation}
+    \begin{aligned}
+    \dot{\hat{q}} &= \frac{1}{2} \hat{q} \otimes \textrm{p}\left(\wfinal\right) \\
+    \dot{\hat{b}} &= -2k_I\werr
+    \end{aligned}
+    \label{eq:traditional_prop}
+    \tag{1}
+\end{equation}
+</script>
+</div>
+<p>where <span><span class="MathJax_Preview">\textrm{p}\left(\cdot\right)</span><script type="math/tex">\textrm{p}\left(\cdot\right)</script></span> creates a pure quaternion from a 3-vector. The term <span><span class="MathJax_Preview">\wfinal</span><script type="math/tex">\wfinal</script></span> is a composite angular rate which consists of the measured angular rates, <span><span class="MathJax_Preview">\bar{\omega}</span><script type="math/tex">\bar{\omega}</script></span>, the estimated gyroscope biases, <span><span class="MathJax_Preview">\hat{b}</span><script type="math/tex">\hat{b}</script></span>, and a correction term calculated from another measurement of attitude (usually the accelerometer), <span><span class="MathJax_Preview">\werr</span><script type="math/tex">\werr</script></span>. The constant gains <span><span class="MathJax_Preview">k_p</span><script type="math/tex">k_p</script></span> and <span><span class="MathJax_Preview">k_I</span><script type="math/tex">k_I</script></span>s are used in determining the dynamics of the filter.
+$$
+\begin{equation}\label{eq:q_omega}\tag{2}
+    \wfinal = \bar{\omega} - \hat{b} + k_P\werr
+\end{equation}
+$$</p>
+<div>
+<div class="MathJax_Preview">
+\newcommand{\avec}{a}
+\newcommand{\gvec}{g}
+\newcommand{\qmeas}{q_{acc}}
+\newcommand{\gamvec}{\gamma}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\wbar}{\bar\omega}
+\newcommand{\w}{\omega}
+\newcommand{\qhat}{\hat{q}}
+</div>
+<script type="math/tex; mode=display">
+\newcommand{\avec}{a}
+\newcommand{\gvec}{g}
+\newcommand{\qmeas}{q_{acc}}
+\newcommand{\gamvec}{\gamma}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\wbar}{\bar\omega}
+\newcommand{\w}{\omega}
+\newcommand{\qhat}{\hat{q}}
+</script>
+</div>
+<p>The correction term <span><span class="MathJax_Preview">\werr</span><script type="math/tex">\werr</script></span> can be understood as the error in the attitude as predicted by another source (e.g., the accelerometer).  To calculate <span><span class="MathJax_Preview">\werr</span><script type="math/tex">\werr</script></span> the quaternion describing the rotation between the accelerometer estimate and the z-axis of the inertial frame (i.e., where gravity <em>should</em> be), <span><span class="MathJax_Preview">\qmeas</span><script type="math/tex">\qmeas</script></span>, is first calculated</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+    \avec =
+        \begin{bmatrix}
+            a_x \\
+            a_y \\
+            a_z \\
+            \end{bmatrix},
+    \qquad
+    \gvec =
+      \begin{bmatrix}
+            0 \\
+            0 \\
+            1 \\
+        \end{bmatrix},
+    \qquad
+    \gamvec = \frac{\avec+\gvec}{\norm{\avec+\gvec}},
+    \qquad
+    \qmeas =
+      \begin{bmatrix}
+        \avec^\top \gamvec \\
+        \avec \times \gamvec
+      \end{bmatrix}
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \avec =
+        \begin{bmatrix}
+            a_x \\
+            a_y \\
+            a_z \\
+            \end{bmatrix},
+    \qquad
+    \gvec =
+      \begin{bmatrix}
+            0 \\
+            0 \\
+            1 \\
+        \end{bmatrix},
+    \qquad
+    \gamvec = \frac{\avec+\gvec}{\norm{\avec+\gvec}},
+    \qquad
+    \qmeas =
+      \begin{bmatrix}
+        \avec^\top \gamvec \\
+        \avec \times \gamvec
+      \end{bmatrix}
+\end{equation}
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+\newcommand{\qtilde}{\tilde{q}}
+\newcommand{\vtilde}{\tilde{v}}
+</div>
+<script type="math/tex; mode=display">
+\newcommand{\qtilde}{\tilde{q}}
+\newcommand{\vtilde}{\tilde{v}}
+</script>
+</div>
+<p>Next, the quaternion error between the estimate <span><span class="MathJax_Preview">\qhat</span><script type="math/tex">\qhat</script></span> and the accelerometer measure <span><span class="MathJax_Preview">\qmeas</span><script type="math/tex">\qmeas</script></span> is calculated.
+\begin{equation}
+    \qtilde = \qmeas^{-1} \otimes \qhat =
+        \begin{bmatrix}
+            \tilde{s}\
+            \vtilde
+        \end{bmatrix}
+\end{equation}</p>
+<p>Finally, <span><span class="MathJax_Preview">\qmeas</span><script type="math/tex">\qmeas</script></span> is converted back into a 3-vector per the method described in eq. 47a of Mahony2007 <sup id="fnref3:1"><a class="footnote-ref" href="#fn:1">1</a></sup>.
+\begin{equation}
+    \werr = 2\tilde{s}\vtilde
+\end{equation}</p>
+<p>Both the attitude quaternion and bias dynamics can be integrated using standard Euler integration, requiring that the resulting quaternion is re-normalized.</p>
+<h3 id="modifications-to-original-passive-filter">Modifications to Original Passive Filter<a class="headerlink" href="#modifications-to-original-passive-filter" title="Permanent link">&para;</a></h3>
+<p>There have been a few modifications to the passive filter described in Mahony2007 <sup id="fnref4:1"><a class="footnote-ref" href="#fn:1">1</a></sup>, consisting primarily of contributions from <a href="https://arc.aiaa.org/doi/pdf/10.2514/6.2013-4615">Casey2013</a>.  Firstly, rather than simply taking gyroscope measurements directly as an estimate of <span><span class="MathJax_Preview">\omega</span><script type="math/tex">\omega</script></span>, a quadratic polynomial is used to approximate the true angular rate from gyroscope measurements to reduce error.  In Casey2013, this process was shown to reduce RMS error by more than 1,000 times.  There are additional steps associated with performing this calculation, but the benefit in accuracy more than compensates for the extra calculation time.  The equation to perform this calculation is shown in Eq.<span><span class="MathJax_Preview">\eqref{eq:quad_approx}</span><script type="math/tex">\eqref{eq:quad_approx}</script></span>.</p>
+<div>
+<div class="MathJax_Preview">\begin{equation}
+    \bar{\omega} = \frac{1}{12}\left(-\omega\left(t_{n-2}\right) + 8\omega\left(t_{n-1}\right) + 5\omega\left(t_n\right) \right)
+    \label{eq:quad_approx}
+    \tag{4}
+\end{equation}</div>
+<script type="math/tex; mode=display">\begin{equation}
+    \bar{\omega} = \frac{1}{12}\left(-\omega\left(t_{n-2}\right) + 8\omega\left(t_{n-1}\right) + 5\omega\left(t_n\right) \right)
+    \label{eq:quad_approx}
+    \tag{4}
+\end{equation}</script>
+</div>
+<p>where <span><span class="MathJax_Preview">\omega(t_{n-x})</span><script type="math/tex">\omega(t_{n-x})</script></span> is the gyroscope measurement of the angular rate <span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> measurements previous.</p>
+<p>The second modification is in the way that the attitude is propagated after finding <span><span class="MathJax_Preview">\dot{\hat{q}}</span><script type="math/tex">\dot{\hat{q}}</script></span>.  Instead of performing the standard euler integration</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+    \hat{q}_n = \hat{q}_{n-1}+\dot{\hat{q}}_n dt
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \hat{q}_n = \hat{q}_{n-1}+\dot{\hat{q}}_n dt
+\end{equation}
+</script>
+</div>
+<p>we use an approximation of the matrix exponential.  The matrix exponential arises out of the solution to the differential equation <span><span class="MathJax_Preview">\dot{x} = Ax</span><script type="math/tex">\dot{x} = Ax</script></span>, namely
+$$
+\begin{equation}
+    x(t) = e^{At} x(0)
+\end{equation}
+$$</p>
+<p>and the discrete-time equivalent
+$$
+\begin{equation}
+    x(t_{n+1}) = e^{hA}(t_n)
+\end{equation}
+$$</p>
+<p>This discrete-time matrix exponential can be approximated by first expanding the matrix exponential into the infinite series</p>
+<div>
+<div class="MathJax_Preview">\begin{equation}
+    e^{A} = \sum_{k=0}^\infty \dfrac{1}{k!}A^k
+\end{equation}</div>
+<script type="math/tex; mode=display">\begin{equation}
+    e^{A} = \sum_{k=0}^\infty \dfrac{1}{k!}A^k
+\end{equation}</script>
+</div>
+<p>and then grouping odd and even terms from the infinite series into two sinusoids, and results in the following equation for the propagation of the quaternion dynamics</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+    \qhat(t_n) = \left[ \cos \left( \frac{\norm{\w}h}{2}\right)I_4  + \frac{1}{\norm{\w}} \sin \left( \frac{\norm{\w}h}{2} \right) \lfloor\w\rfloor_4   \right] \qhat(t_{n-1})
+    \label{eq:mat_exponential}
+    \tag{3}
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+    \qhat(t_n) = \left[ \cos \left( \frac{\norm{\w}h}{2}\right)I_4  + \frac{1}{\norm{\w}} \sin \left( \frac{\norm{\w}h}{2} \right) \lfloor\w\rfloor_4   \right] \qhat(t_{n-1})
+    \label{eq:mat_exponential}
+    \tag{3}
+\end{equation}
+</script>
+</div>
+<p>where <span><span class="MathJax_Preview">\lfloor\w\rfloor_4</span><script type="math/tex">\lfloor\w\rfloor_4</script></span> is the 4x4 skew-symmetric matrix formed from <span><span class="MathJax_Preview">\w</span><script type="math/tex">\w</script></span></p>
+<div>
+<div class="MathJax_Preview">\begin{equation}
+    \lfloor\w\rfloor_4 =
+    \begin{bmatrix}
+        0   &amp; - p &amp; - q  &amp; - r  \\
+        p   &amp;   0   &amp;  r &amp; - q \\
+        q   &amp; - r  &amp;  0   &amp;  p \\
+        r   &amp;  q  &amp; - p &amp; 0  \\
+    \end{bmatrix}
+\end{equation}</div>
+<script type="math/tex; mode=display">\begin{equation}
+    \lfloor\w\rfloor_4 =
+    \begin{bmatrix}
+        0   & - p & - q  & - r  \\
+        p   &   0   &  r & - q \\
+        q   & - r  &  0   &  p \\
+        r   &  q  & - p & 0  \\
+    \end{bmatrix}
+\end{equation}</script>
+</div>
+<h2 id="external-attitude-measurements">External Attitude Measurements<a class="headerlink" href="#external-attitude-measurements" title="Permanent link">&para;</a></h2>
+<p>Using the ROSflight estimator with gyro measurements only will quickly drift due to gyro biases. The accelerometer makes the biases in <span><span class="MathJax_Preview">p</span><script type="math/tex">p</script></span> and <span><span class="MathJax_Preview">q</span><script type="math/tex">q</script></span> observable and provides another measurement of pitch and roll. To make yaw observable, an external attitude measurement can be provided to the estimator which is used in much the same way as the accelerometer. Instead of as outlined above for accelerometer updates, the correction term <span><span class="MathJax_Preview">\werr</span><script type="math/tex">\werr</script></span> can be calculated as
+$$
+\begin{equation}
+    \werr = k_\text{ext}\sum_{i=1}^3 R(\hat{q})^\top e_i\times \bar{R}^\top e_i
+\end{equation}
+$$
+where <span><span class="MathJax_Preview">k_\text{ext}= F_s^\text{IMU} / F_s^\text{ext}</span><script type="math/tex">k_\text{ext}= F_s^\text{IMU} / F_s^\text{ext}</script></span> is the ratio of the IMU sample rate to the external attitude sample rate.</p>
+<p>In our implementation, whenever an external attitude measurement is supplied, if there was a <span><span class="MathJax_Preview">\werr</span><script type="math/tex">\werr</script></span> calculated from the accelerometer, it is overwritten by the above calculation for an external attitude update. Also note that the gain <span><span class="MathJax_Preview">k_P</span><script type="math/tex">k_P</script></span> associated with an external attitude can be much higher if we trust the source of the external attitude measurement.</p>
+<h2 id="tuning">Tuning<a class="headerlink" href="#tuning" title="Permanent link">&para;</a></h2>
+<p>The filter can be tuned with the two gains <span><span class="MathJax_Preview">k_P</span><script type="math/tex">k_P</script></span> and <span><span class="MathJax_Preview">k_I</span><script type="math/tex">k_I</script></span>.  Upon initialization, <span><span class="MathJax_Preview">k_P</span><script type="math/tex">k_P</script></span> and <span><span class="MathJax_Preview">k_i</span><script type="math/tex">k_i</script></span> are set very high, so as to quickly cause the filter to converge upon approprate values.  After a few seconds, they are both reduced by a factor of 10, to a value chosen through manual tuning.  A high <span><span class="MathJax_Preview">k_P</span><script type="math/tex">k_P</script></span> will cause sensitivity to transient accelerometer errors, while a small <span><span class="MathJax_Preview">k_P</span><script type="math/tex">k_P</script></span> will cause sensitivity to gyroscope drift.  A high <span><span class="MathJax_Preview">k_I</span><script type="math/tex">k_I</script></span> will cause biases to wander unnecessarily, while a low <span><span class="MathJax_Preview">k_I</span><script type="math/tex">k_I</script></span> will result in slow convergence upon accurate gyroscope bias estimates.  These parameters generally do not need to be modified from the default values.</p>
+<h2 id="implementation">Implementation<a class="headerlink" href="#implementation" title="Permanent link">&para;</a></h2>
+<p>The entire filter is implemented in float-based quaternion calculations.  Even though the STM32F10x microprocessor does not contain a floating-point unit, the entire filter has been timed to take about 370<span><span class="MathJax_Preview">\mu</span><script type="math/tex">\mu</script></span>s.  The extra steps of quadratic integration and matrix exponential propagation can be ommited for a 20<span><span class="MathJax_Preview">\mu</span><script type="math/tex">\mu</script></span>s and 90<span><span class="MathJax_Preview">\mu</span><script type="math/tex">\mu</script></span>s reduction in speed, respectively.  Even with these functions, however, this is sufficiently short to run at well over 1000Hz, which is the update rate of the MPU6050 on the naze32.</p>
+<p>Control is performed according to euler angle estimates, and to reduce the computational load of converting from quaternion to euler angles (See Equation<span><span class="MathJax_Preview">\eqref{eq:euler_from_quat}</span><script type="math/tex">\eqref{eq:euler_from_quat}</script></span>), a lookup table approximation of atan2 and asin are used.  The Invensense MPU6050 has a 16-bit ADC and an accelerometer and gyro onboard.  The accelerometer, when scaled to <span><span class="MathJax_Preview">\pm</span><script type="math/tex">\pm</script></span>4g, has a resolution of 0.002394 m/s<span><span class="MathJax_Preview">^2</span><script type="math/tex">^2</script></span>.  The lookup table method used to approximate atan2 and asin in the actual implementation is accurate to <span><span class="MathJax_Preview">\pm</span><script type="math/tex">\pm</script></span> 0.001 rad.  Given the accuracy of the accelerometer, use of this lookup table implementation is justfied.  The C-code implementation of the estimator can be found in the file <code>src/estimator.c.</code></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>Mahony, R., Hamel, T. and Pflimlin, J. (2008). Nonlinear Complementary Filters on the Special Orthogonal Group. IEEE Transactions on Automatic Control, 53(5), pp.1203-1218.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref3:1" title="Jump back to footnote 1 in the text">&#8617;</a><a class="footnote-backref" href="#fnref4:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../../developer-guide/writing-documentation/" title="Writing Documentation" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Writing Documentation
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2019, James Jackson and Daniel Koch, BYU MAGICC Lab
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>
